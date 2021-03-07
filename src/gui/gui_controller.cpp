@@ -42,6 +42,9 @@ void GuiController::on()
     {
         digitalWrite(4, HIGH);
         isOn = true;
+
+        this->page = this->mainPage;
+        this->page->show();
     }
 }
 

@@ -121,9 +121,9 @@ void manageCommands()
 {
   if (okCommand)
   {
-   guiController->onOkClick();
-   okCommand = false;
-   }
+    guiController->onOkClick();
+    okCommand = false;
+  }
   if (upCommand)
   {
     guiController->onUpClick();
@@ -182,9 +182,11 @@ void IRAM_ATTR onOkClick()
   */
   if (millis() - lastButtonAction > DEBOUNCE_DELAY)
   {
+    if( millis()-lastButtonAction > READING_TIMEOUT){
+      guiController->on();
+    }
     lastButtonAction = millis();
-   // okCommand = guiController->onOkClick();
-   okCommand = true;
+    okCommand = true;
   }
 }
 
