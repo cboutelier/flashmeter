@@ -80,6 +80,7 @@ void GuiController::addPage(Page *page)
 
     this->page = page;
     this->page->declineYourId();
+
     Serial.print((long)&this->page, DEC);
     Serial.println("..................................");
 }
@@ -135,3 +136,4 @@ bool GuiController::onOkClick(){
     }
     return false;
 }
+

@@ -8,7 +8,7 @@ class Page
 {
 
 private:
-   
+
 
 protected:
     TFT_eSPI *display;

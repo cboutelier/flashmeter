@@ -28,19 +28,17 @@ FlashMeterModel::FlashMeterModel()
 
 void FlashMeterModel::loadFromEEPROM()
 {
-    Serial.println("Reading mode entry");
-    // Serial.println(EEPROM.readInt(0));
     modeEntry->setCurrentValueIndex(EEPROM.readInt(MODE_INDEX));
     sensitivityEntry->setCurrentValueIndex(EEPROM.readInt(MODE_INDEX + sizeof(int)));
 }
 
 bool FlashMeterModel::save()
 {
-    Serial.println("Saving the values....");
-    Serial.println("Setting mode entry ");
-    Serial.println(modeEntry->getCurrentValueIndex());
-
+    //Detach interruption to allow use of the memory 
+     this->detachInterruptCallback();
+ 
     int address = MODE_INDEX;
+   
 
     EEPROM.writeInt(address, modeEntry->getCurrentValueIndex());
     EEPROM.writeInt(address + sizeof(int), sensitivityEntry->getCurrentValueIndex());
@@ -54,6 +52,7 @@ bool FlashMeterModel::save()
         Serial.println("Couldnt commit");
     }
 
+    this->attachInterruptCallback();
     return commit;
 }
 
@@ -90,4 +89,13 @@ long FlashMeterModel::getCurrentLuxValue()
 void FlashMeterModel::setCurrentLuxValue(long luxValue)
 {
     this->currentLuxValue = luxValue;
+}
+
+
+void FlashMeterModel::setAttachCallback( void (*attach)()){
+    this->attachInterruptCallback = attach;
+}
+
+void FlashMeterModel::setDetachCallback( void (*detach)()){
+        this->detachInterruptCallback = detach;
 }

@@ -37,7 +37,6 @@ private:
     TFT_eSPI *display;
     void showSplash();
     bool isOn;
-    
 };
 
 #endif

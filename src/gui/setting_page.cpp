@@ -78,6 +78,13 @@ bool SettingPage::onOk()
             if (renderers[i].isEntrySelected())
             {
                 bool save = renderers[i].onOk();
+                 if( save ){
+                    
+                    
+                    this->model->save();
+                  
+                }
+                
                 Serial.print("Saving? ");
                 Serial.println(save);
                 return save;
@@ -137,3 +144,6 @@ void SettingPage::declineYourId()
 {
     Serial.println("I am a SettingPage");
 }
+
+
+ 

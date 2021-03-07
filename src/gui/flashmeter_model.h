@@ -24,6 +24,10 @@ private:
     Entry* modeEntry;
     Entry* sensitivityEntry;
     void loadFromEEPROM();
+
+protected:
+    void (*attachInterruptCallback)();
+    void (*detachInterruptCallback)();
     
 
 public:
@@ -47,9 +51,9 @@ public:
     int getEntriesCount(){ return 2;}
 
     bool save();
-    
-    
-  
+
+    void setAttachCallback( void (*attach)());
+    void setDetachCallback( void (*detach)());
     
 };
 

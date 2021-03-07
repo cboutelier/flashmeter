@@ -42,8 +42,9 @@ void IRAM_ATTR onDownClick();
 void IRAM_ATTR onRightClick();
 void IRAM_ATTR onLeftClick();
 
-void attachInterrupts();
-void detachInterrupts();
+void IRAM_ATTR attachInterrupts();
+void IRAM_ATTR detachInterrupts();
+ 
 void manageCommands();
 void setup()
 {
@@ -67,7 +68,12 @@ void setup()
   lightMeter.begin(BH1750::ONE_TIME_HIGH_RES_MODE);
 
   model = new FlashMeterModel();
+  model->setAttachCallback( &attachInterrupts);
+  model->setDetachCallback( &detachInterrupts);
+
   guiController = new GuiController(&display, model);
+
+ 
   // SettingPage settings;
   //gui->addPage(&settings);
 
@@ -75,8 +81,10 @@ void setup()
 
   Serial.println(F("Setup done"));
 }
+ 
 
-void attachInterrupts()
+
+void IRAM_ATTR attachInterrupts()
 {
   attachInterrupt(SET_PIN, onSettingClick, RISING);
   attachInterrupt(UP_PIN, onUpClick, RISING);
@@ -86,7 +94,7 @@ void attachInterrupts()
   attachInterrupt(OK_PIN, onOkClick, RISING);
 }
 
-void detachInterrupts()
+void IRAM_ATTR detachInterrupts()
 {
   detachInterrupt(SET_PIN);
   detachInterrupt(UP_PIN);
@@ -101,7 +109,6 @@ void loop()
 
   if (millis() - lastButtonAction > READING_TIMEOUT)
   {
-
     guiController->off();
   }
 
@@ -112,13 +119,11 @@ void loop()
 
 void manageCommands()
 {
-  if (toSave)
+  if (okCommand)
   {
-    detachInterrupts();
-    model->save();
-    attachInterrupts();
-    toSave = false;
-  }
+   guiController->onOkClick();
+   okCommand = false;
+   }
   if (upCommand)
   {
     guiController->onUpClick();
@@ -178,7 +183,8 @@ void IRAM_ATTR onOkClick()
   if (millis() - lastButtonAction > DEBOUNCE_DELAY)
   {
     lastButtonAction = millis();
-    toSave = guiController->onOkClick();
+   // okCommand = guiController->onOkClick();
+   okCommand = true;
   }
 }
 
