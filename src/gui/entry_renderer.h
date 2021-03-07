@@ -20,7 +20,7 @@ private:
 
     bool entrySelected = false;
 
-    unsigned short highlightedIndex = -1;
+    signed short highlightedIndex = -1;
     /* index of the value being 'selected'  */
     int valueSelectedIndex = -1;
 
@@ -33,17 +33,21 @@ public:
     void init(TFT_eSPI *display, Entry *entry, int yOffset);
     void setInitialColors(unsigned short background, unsigned short foreground, unsigned short selected);
     void setHighlightedIndex(unsigned short index) { this->highlightedIndex = index; }
-    unsigned short getHighlightedIndex()
+    signed short getHighlightedIndex()
     {
         return this->highlightedIndex;
     }
     void setEntrySelected(const bool selected) { this->entrySelected = selected; }
+    int getValueSelectedIndex(){return valueSelectedIndex; }
+    
     bool isEntrySelected() { return entrySelected; }
 
     
     void onRight();
     void onLeft();
     bool onOk();
+
+    void showMeYourId();
 
     // void setOnSelect(void (*func)());
 };

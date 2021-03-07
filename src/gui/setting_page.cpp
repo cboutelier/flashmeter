@@ -9,34 +9,48 @@ SettingPage::SettingPage(TFT_eSPI *display, FlashMeterModel *model)
     renderers = new EntryRenderer[this->model->getEntriesCount()];
     for (int i = 0; i < this->model->getEntriesCount(); i++)
     {
-        Serial.println("Creating an EntryRenderer");
-
         renderers[i].init(display, this->model->getEntry(i), 30 + i * 15);
         renderers[i].setInitialColors(TFT_DARKGREEN, TFT_WHITE, TFT_SKYBLUE);
     }
 
-    Serial.println("Constructor of a setting page");
 }
 
 void SettingPage::onUp()
 {
-    if (selectedEntry > 0)
+    if (selectedEntry > 0  && this->isUpDownAllowed())
     {
         selectedEntry--;
         this->adjustSelectedEntry();
         this->show();
     }
-    Serial.print("On Up of Setting page ");
-    Serial.println(selectedEntry);
 }
 
 void SettingPage::onDown()
 {
-    if( selectedEntry < this->model->getEntriesCount() ){
+    if( selectedEntry < this->model->getEntriesCount() && this->isUpDownAllowed()){
         selectedEntry++;
         this->adjustSelectedEntry();
         this->show();
     }
+}
+
+
+/**
+ * Accepts scrolling only if the carret is on the name.
+ **/
+bool SettingPage::isUpDownAllowed(){
+   
+    if( selectedEntry == 0){
+        return true;
+    }
+
+    if( selectedEntry > 0 ){
+        EntryRenderer entry = renderers[selectedEntry-1];
+        if( entry.getValueSelectedIndex()==-1){
+            return true;
+        }
+    }
+    return false;
 }
 
 void SettingPage::onLeft()
@@ -115,7 +129,6 @@ void SettingPage::adjustSelectedEntry()
 
 void SettingPage::show()
 {
-    Serial.println("Show on setting page");
     display->fillScreen(TFT_DARKGREEN);
     if (selectedEntry > 0)
     {

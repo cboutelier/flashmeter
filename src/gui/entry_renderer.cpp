@@ -87,7 +87,7 @@ void EntryRenderer::show()
         display->print(F(" .."));
     }
 
-    Serial.println("Show methow of an entry renderer");
+    Serial.println("Show method of an entry renderer");
 }
 
 /*
@@ -148,8 +148,14 @@ void EntryRenderer::onLeft()
     if (valueSelectedIndex >= 0)
     {
         valueSelectedIndex--;
+        Serial.print("New value of selected Index:" );
+        Serial.println(valueSelectedIndex);
     }
     Serial.print("On left on ");
     Serial.println(this->entry->getEntryName());
     this->show();
+}
+
+void EntryRenderer::showMeYourId(){
+    Serial.println(entry->getEntryName());
 }

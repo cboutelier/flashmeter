@@ -10,6 +10,7 @@ class SettingPage :  public Page{
     private:
         int selectedEntry = 0;
         void adjustSelectedEntry();
+        bool isUpDownAllowed();
     
     protected:
      EntryRenderer *renderers;
