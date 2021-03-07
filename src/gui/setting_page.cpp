@@ -30,14 +30,13 @@ void SettingPage::onUp()
     Serial.println(selectedEntry);
 }
 
-//TODO: add a limit
 void SettingPage::onDown()
 {
-    Serial.println("On down of setting page");
-
-    selectedEntry++;
-    this->adjustSelectedEntry();
-    this->show();
+    if( selectedEntry < this->model->getEntriesCount() ){
+        selectedEntry++;
+        this->adjustSelectedEntry();
+        this->show();
+    }
 }
 
 void SettingPage::onLeft()
