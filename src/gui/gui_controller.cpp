@@ -1,7 +1,7 @@
 #include "gui_controller.h"
 #include <Arduino.h>
-#include "setting_page.h"
-#include "main_page.h"
+#include "pages/setting_page.h"
+#include "pages/main_page.h"
 
 GuiController::GuiController(TFT_eSPI *d, FlashMeterModel* model)
 {
@@ -9,7 +9,8 @@ GuiController::GuiController(TFT_eSPI *d, FlashMeterModel* model)
     this->model = model;
 
     this->settingPage = new SettingPage(d, this->model );
-    this->mainPage = new MainPage(d);
+    this->mainPage = new MainPage(d, this->model);
+    
     this->page = this->mainPage;
     isOn = true;
     display = d;
@@ -134,7 +135,7 @@ void GuiController::onRightClick(){
 
 bool GuiController::onOkClick(){
       if( this->page != NULL){
-          Serial.println("OK click on gui controller");
+        Serial.println("OK click on gui controller");
         return this->page->onOk();
     }
     return false;

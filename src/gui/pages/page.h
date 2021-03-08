@@ -2,7 +2,7 @@
 #define PAGE_H
 #include <Arduino.h>
 #include <TFT_eSPI.h>
-#include "flashmeter_model.h"
+#include "../flashmeter_model.h"
 
 class Page
 {

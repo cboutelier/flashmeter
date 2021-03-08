@@ -5,7 +5,6 @@
 #include <BH1750.h>
 #include <TFT_eSPI.h>
 #include "gui/gui_controller.h"
-#include "gui/setting_page.h"
 #include "gui/flashmeter_model.h"
 
 #define SCL_PIN 22
@@ -18,12 +17,14 @@
 #define DOWN_PIN 12
 
 const int DEBOUNCE_DELAY = 1000;
-const int READING_TIMEOUT = 30000;
+const int READING_TIMEOUT = 10000;
 
 BH1750 lightMeter;
 TFT_eSPI display;
 GuiController *guiController;
 FlashMeterModel *model;
+
+double focale = 1.4;
 
 bool toSave = false;
 bool upCommand = false;
@@ -73,10 +74,6 @@ void setup()
 
   guiController = new GuiController(&display, model);
 
- 
-  // SettingPage settings;
-  //gui->addPage(&settings);
-
   attachInterrupts();
 
   Serial.println(F("Setup done"));
@@ -115,6 +112,11 @@ void loop()
   manageCommands();
 
   delay(100);
+
+   
+  
+   
+
 }
 
 void manageCommands()
@@ -128,6 +130,9 @@ void manageCommands()
   {
     guiController->onUpClick();
     upCommand = false;
+
+    focale += 1.0;
+    model->setCurrentFocale(focale);
   }
   else if (downCommand)
   {

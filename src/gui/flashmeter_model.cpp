@@ -1,5 +1,6 @@
 #include "flashmeter_model.h"
 #include <EEPROM.h>
+#include "observer.h"
 
 #define MODE_INDEX 0
 #define SENSITIVITY_INDEX 1
@@ -98,4 +99,16 @@ void FlashMeterModel::setAttachCallback( void (*attach)()){
 
 void FlashMeterModel::setDetachCallback( void (*detach)()){
         this->detachInterruptCallback = detach;
+}
+
+void FlashMeterModel::registerObserver( Observer* observer){
+    this->observer = observer;
+    Serial.println("register observer");
+}
+
+void FlashMeterModel::setCurrentFocale( double focale){
+     this->currentFocale = String(focale);
+    if( this->observer != nullptr){
+        this->observer->onReceiveDataFromSubject(this);
+    } 
 }

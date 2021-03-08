@@ -3,7 +3,9 @@
 
 #include <Arduino.h>
 #include "entry.h"
-#include "entries_array.h"
+ 
+
+class Observer;
 
 class FlashMeterModel
 {
@@ -16,6 +18,8 @@ private:
     */
     int currentMode;
     long currentLuxValue;
+
+    String currentFocale;
   
     
     
@@ -23,6 +27,9 @@ private:
 
     Entry* modeEntry;
     Entry* sensitivityEntry;
+  
+    Observer* observer;
+  
     void loadFromEEPROM();
 
 protected:
@@ -45,6 +52,10 @@ public:
     void setCurrentLuxValue(long luxValue);
     /*   void setCurrentEVValue();*/
 
+    String getCurrentFocale() const {return currentFocale;};
+
+    void setCurrentFocale(double focale);
+
     int getCurrentMode();
     void setCurrentMode(int mode);
     Entry* getEntry(int index);
@@ -54,6 +65,8 @@ public:
 
     void setAttachCallback( void (*attach)());
     void setDetachCallback( void (*detach)());
+
+    void registerObserver(Observer* observer);
     
 };
 
