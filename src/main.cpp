@@ -15,6 +15,7 @@
 #define LEFT_PIN 15
 #define RIGHT_PIN 2
 #define DOWN_PIN 12
+#define BACK_PIN 35
 
 const int DEBOUNCE_DELAY = 1000;
 const int READING_TIMEOUT = 10000;
@@ -34,6 +35,7 @@ bool rightCommand = false;
 bool leftCommand = false;
 bool settingsCommand = false;
 bool okCommand = false;
+bool backCommand = false;
 
 unsigned long lastButtonAction = 0;
 
@@ -43,6 +45,7 @@ void IRAM_ATTR onUpClick();
 void IRAM_ATTR onDownClick();
 void IRAM_ATTR onRightClick();
 void IRAM_ATTR onLeftClick();
+void IRAM_ATTR onBackClick();
 
 void IRAM_ATTR attachInterrupts();
 void IRAM_ATTR detachInterrupts();
@@ -62,6 +65,7 @@ void setup()
   pinMode(DOWN_PIN, INPUT_PULLUP);
   pinMode(RIGHT_PIN, INPUT_PULLUP);
   pinMode(LEFT_PIN, INPUT_PULLUP);
+  pinMode(BACK_PIN, INPUT_PULLUP);
 
   //Specific initialization of the Wire library: because the bh1750 lib does not do it, and because the board uses non standard pins.
   Wire.begin(SDA_PIN, SCL_PIN);
@@ -91,6 +95,7 @@ void IRAM_ATTR attachInterrupts()
   attachInterrupt(RIGHT_PIN, onRightClick, RISING);
   attachInterrupt(LEFT_PIN, onLeftClick, RISING);
   attachInterrupt(OK_PIN, onOkClick, RISING);
+  attachInterrupt(BACK_PIN, onBackClick, RISING);
 }
 
 void IRAM_ATTR detachInterrupts()
@@ -101,6 +106,7 @@ void IRAM_ATTR detachInterrupts()
   detachInterrupt(RIGHT_PIN);
   detachInterrupt(LEFT_PIN);
   detachInterrupt(OK_PIN);
+  detachInterrupt(BACK_PIN);
 }
 
 void loop()
@@ -127,6 +133,11 @@ void manageCommands()
   {
     guiController->onOkClick();
     okCommand = false;
+  }
+  if (backCommand)
+  {
+    guiController->onBackClick();
+    backCommand = false;
   }
   if (upCommand)
   {
@@ -197,6 +208,17 @@ void IRAM_ATTR onOkClick()
     okCommand = true;
   }
 }
+
+
+void IRAM_ATTR onBackClick(){
+ if (millis() - lastButtonAction > DEBOUNCE_DELAY)
+  { 
+    lastButtonAction = millis();
+    backCommand = true;
+  }
+
+}
+
 
 void IRAM_ATTR onUpClick()
 {

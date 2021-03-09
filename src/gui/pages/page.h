@@ -22,6 +22,7 @@ public:
     virtual void onLeft() = 0;
     virtual void onRight() = 0;
     virtual bool onOk() = 0;
+    virtual bool onBack() = 0;
     String *lines;
     void setDisplay(TFT_eSPI *display);
     String getCode() { return this->code; }

@@ -92,11 +92,8 @@ bool SettingPage::onOk()
             if (renderers[i].isEntrySelected())
             {
                 bool save = renderers[i].onOk();
-                 if( save ){
-                    
-                    
+                if( save ){
                     this->model->save();
-                  
                 }
                 
                 Serial.print("Saving? ");
@@ -105,6 +102,10 @@ bool SettingPage::onOk()
             }
         }
     }
+    return false;
+}
+
+bool SettingPage::onBack(){
     return false;
 }
 

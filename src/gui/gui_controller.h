@@ -31,6 +31,7 @@ public:
     void onRightClick();
     void onLeftClick();
     bool onOkClick();
+    bool onBackClick();
  
 
 private:

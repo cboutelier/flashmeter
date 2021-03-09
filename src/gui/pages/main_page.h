@@ -14,6 +14,7 @@ class MainPage :  public Page{
         void onRight();
         void onLeft();
         bool onOk();
+        bool onBack();
         void show();
         void declineYourId();
         Area* focalArea;

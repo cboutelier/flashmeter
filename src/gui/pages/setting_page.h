@@ -22,6 +22,7 @@ class SettingPage :  public Page{
         void onLeft();
         void onRight();
         bool onOk();
+        bool onBack();
         void show();
         void declineYourId();
 };

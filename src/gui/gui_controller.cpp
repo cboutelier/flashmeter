@@ -141,3 +141,13 @@ bool GuiController::onOkClick(){
     return false;
 }
 
+bool GuiController::onBackClick(){
+    if( this->page == this->settingPage){
+        this->page = this->mainPage;
+        this->page->show();
+        return true;
+    }
+    Serial.println("Back not implemented");
+    return false;
+}
+

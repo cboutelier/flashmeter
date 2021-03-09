@@ -49,8 +49,14 @@ bool MainPage::onOk()
     return false;
 }
 
+bool MainPage::onBack(){
+    Serial.println("on back of main page");
+    return false;
+}
+
 void MainPage::show()
 {
+    display->fillScreen(TFT_BLACK);
     display->setRotation(1);
     this->focalArea->show();
     this->speedArea->show(); 
