@@ -8,9 +8,6 @@ void SpeedArea::show(){
     display->setTextColor(this->foreground, this->background);
     display->setCursor(130, 78, 4);
     display->print("EV "  + value );
-
-    Serial.println(this->value);
-     
 }
 
 void SpeedArea::onReceiveDataFromSubject(const FlashMeterModel *model){

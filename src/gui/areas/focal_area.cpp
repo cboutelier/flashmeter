@@ -13,7 +13,5 @@ void FocalArea::show(){
 void FocalArea::onReceiveDataFromSubject(const FlashMeterModel *model){
     this->value = model->getCurrentFocale();
     this->show();
-    Serial.print ("Received data ");
-    Serial.println(this->x);
 }
  

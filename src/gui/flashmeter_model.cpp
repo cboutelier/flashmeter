@@ -114,17 +114,13 @@ void FlashMeterModel::registerObserver(Observer *observer)
     if (this->registeredObservers < MAX_REGISTERED_OBSERVERS)
     {
         for( int j = 0; j < MAX_REGISTERED_OBSERVERS; j++){
-            Serial.println("Try to register");
             
-            if( this->observers[j] == NULL){
-                Serial.println(" FOUND ONE");
+            if( this->observers[j] == NULL){   
                 this->observers[j] = observer;
-                this->registeredObservers++;
-                Serial.println("register observer");
+                this->registeredObservers++;  
                 break;
             }
-            Serial.println("Did not make it");
-        
+           
         }
         
     }
@@ -142,8 +138,6 @@ void FlashMeterModel::unRegisterObserver(Observer *observer)
             this->registeredObservers++;
             break;
         }
-        
-        Serial.println("unregister observer");
     }
 }
 
