@@ -34,13 +34,3 @@ void Area::setDisplay(TFT_eSPI* d){
     this->display = d;
 }
 
-void Area::show(){
-    display->fillRect(this->x, this->y, this->width, this->height,  this->background);
-    display->setCursor(10, 78, 4);
-    display->print("f "  + value );
-}
-
-void Area::onReceiveDataFromSubject(const FlashMeterModel *model){
-    this->value = model->getCurrentFocale();
-    this->show();
-}

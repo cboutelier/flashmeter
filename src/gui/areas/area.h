@@ -20,11 +20,11 @@ public:
     void setForeground(uint32_t fore);
 
     void setDisplay(TFT_eSPI *display);
-    void show();
+    virtual void show() = 0;
 
-    void onReceiveDataFromSubject(const FlashMeterModel* model);
+    virtual void onReceiveDataFromSubject(const FlashMeterModel* model) = 0;
 
-private:
+protected:
     int x;
     int y;
     int width;

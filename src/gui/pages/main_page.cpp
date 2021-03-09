@@ -1,5 +1,8 @@
 #include "main_page.h"
 
+#include "../areas/focal_area.h"
+#include "../areas/speed_area.h"
+
 MainPage::MainPage(TFT_eSPI *display, FlashMeterModel* model)
 {
 
@@ -7,11 +10,17 @@ MainPage::MainPage(TFT_eSPI *display, FlashMeterModel* model)
     this->model  = model;
     this->display = display;
     this->code = "MAIN";
-    this->area = new Area(00, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
-    this->area->setDisplay(display);
-    this->area->setBackground(TFT_NAVY);
-    this->area->attachSubject(this->model);
-    
+    this->focalArea = new FocalArea(00, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
+    this->focalArea->setDisplay(display);
+    this->focalArea->setBackground(TFT_NAVY);
+    this->focalArea->setForeground(TFT_WHITE);
+    this->focalArea->attachSubject(this->model);
+
+    this->speedArea = new SpeedArea(120, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
+    this->speedArea->setDisplay(display);
+    this->speedArea->setBackground(TFT_DARKGREEN);
+    this->speedArea->setForeground(TFT_WHITE);
+    this->speedArea->attachSubject(this->model);
 }
 
 void MainPage::onUp()
@@ -42,11 +51,9 @@ bool MainPage::onOk()
 
 void MainPage::show()
 {
-    Serial.println("Show on main page");
-    display->setTextColor(this->area->getForeground(), this->area->getBackground());
     display->setRotation(1);
-    this->area->show();
-   
+    this->focalArea->show();
+    this->speedArea->show(); 
 }
 
 void MainPage::declineYourId()

@@ -16,7 +16,8 @@ class MainPage :  public Page{
         bool onOk();
         void show();
         void declineYourId();
-        Area* area;
+        Area* focalArea;
+        Area* speedArea;
 };
 
 #endif //MAIN_PAGE_H

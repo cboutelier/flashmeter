@@ -8,6 +8,10 @@
 FlashMeterModel::FlashMeterModel()
 {
 
+    for( int j = 0; j < MAX_REGISTERED_OBSERVERS; j++){
+         this->observers[j] = NULL;
+    }
+
     Serial.println("------------- Constructor of FlashMeterModel ----------------");
     modeEntry = new Entry(0);
     modeEntry->setEntryName("Mode");
@@ -35,11 +39,10 @@ void FlashMeterModel::loadFromEEPROM()
 
 bool FlashMeterModel::save()
 {
-    //Detach interruption to allow use of the memory 
-     this->detachInterruptCallback();
- 
+    //Detach interruption to allow use of the memory
+    this->detachInterruptCallback();
+
     int address = MODE_INDEX;
-   
 
     EEPROM.writeInt(address, modeEntry->getCurrentValueIndex());
     EEPROM.writeInt(address + sizeof(int), sensitivityEntry->getCurrentValueIndex());
@@ -82,7 +85,7 @@ void FlashMeterModel::setCurrentMode(int modeIndex)
     this->currentMode = modeIndex;
 }
 
-long FlashMeterModel::getCurrentLuxValue()
+long FlashMeterModel::getCurrentLuxValue() const
 {
     return this->currentLuxValue;
 }
@@ -90,25 +93,67 @@ long FlashMeterModel::getCurrentLuxValue()
 void FlashMeterModel::setCurrentLuxValue(long luxValue)
 {
     this->currentLuxValue = luxValue;
+    for (int j = 0; j < this->registeredObservers; j++)
+    {
+        this->observers[j]->onReceiveDataFromSubject(this);
+    }
 }
 
-
-void FlashMeterModel::setAttachCallback( void (*attach)()){
+void FlashMeterModel::setAttachCallback(void (*attach)())
+{
     this->attachInterruptCallback = attach;
 }
 
-void FlashMeterModel::setDetachCallback( void (*detach)()){
-        this->detachInterruptCallback = detach;
+void FlashMeterModel::setDetachCallback(void (*detach)())
+{
+    this->detachInterruptCallback = detach;
 }
 
-void FlashMeterModel::registerObserver( Observer* observer){
-    this->observer = observer;
-    Serial.println("register observer");
+void FlashMeterModel::registerObserver(Observer *observer)
+{
+    if (this->registeredObservers < MAX_REGISTERED_OBSERVERS)
+    {
+        for( int j = 0; j < MAX_REGISTERED_OBSERVERS; j++){
+            Serial.println("Try to register");
+            
+            if( this->observers[j] == NULL){
+                Serial.println(" FOUND ONE");
+                this->observers[j] = observer;
+                this->registeredObservers++;
+                Serial.println("register observer");
+                break;
+            }
+            Serial.println("Did not make it");
+        
+        }
+        
+    }
 }
 
-void FlashMeterModel::setCurrentFocale( double focale){
-     this->currentFocale = String(focale);
-    if( this->observer != nullptr){
-        this->observer->onReceiveDataFromSubject(this);
+void FlashMeterModel::unRegisterObserver(Observer *observer)
+{
+    if (this->registeredObservers == 0){
+        return;
     } 
+    for( int j = 0; j < MAX_REGISTERED_OBSERVERS; j++)
+    {
+        if( this->observers[j] == observer) {
+            this->observers[j] = nullptr;
+            this->registeredObservers++;
+            break;
+        }
+        
+        Serial.println("unregister observer");
+    }
 }
+
+void FlashMeterModel::setCurrentFocale(double focale)
+{
+    this->currentFocale = String(focale);
+    for (int j = 0; j < this->registeredObservers; j++)
+    {
+        this->observers[j]->onReceiveDataFromSubject(this);
+    }
+}
+
+ 

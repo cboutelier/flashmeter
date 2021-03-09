@@ -25,6 +25,7 @@ GuiController *guiController;
 FlashMeterModel *model;
 
 double focale = 1.4;
+long speed = 30;
 
 bool toSave = false;
 bool upCommand = false;
@@ -71,6 +72,7 @@ void setup()
   model = new FlashMeterModel();
   model->setAttachCallback( &attachInterrupts);
   model->setDetachCallback( &detachInterrupts);
+  model->setCurrentLuxValue(20);
 
   guiController = new GuiController(&display, model);
 
@@ -133,6 +135,7 @@ void manageCommands()
 
     focale += 1.0;
     model->setCurrentFocale(focale);
+    model->setCurrentLuxValue(model->getCurrentLuxValue()+10);
   }
   else if (downCommand)
   {

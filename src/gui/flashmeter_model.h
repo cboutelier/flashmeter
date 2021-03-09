@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include "entry.h"
  
+#define MAX_REGISTERED_OBSERVERS 3
 
 class Observer;
 
@@ -28,7 +29,8 @@ private:
     Entry* modeEntry;
     Entry* sensitivityEntry;
   
-    Observer* observer;
+    Observer* observers[MAX_REGISTERED_OBSERVERS];
+    int registeredObservers = 0;
   
     void loadFromEEPROM();
 
@@ -44,7 +46,7 @@ public:
     int getCurrentSpeedIndex;
     int getCurrentApertureIndex;
     */
-    long getCurrentLuxValue();
+    long getCurrentLuxValue() const;
     /*  double getCurrentEVValue();
     void setCurrentSensibilityIndex();
     void setCurrentSpeedIndex();
@@ -67,6 +69,7 @@ public:
     void setDetachCallback( void (*detach)());
 
     void registerObserver(Observer* observer);
+    void unRegisterObserver(Observer* observer);
     
 };
 
