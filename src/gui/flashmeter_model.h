@@ -70,6 +70,7 @@ public:
 
     void registerObserver(Observer* observer);
     void unRegisterObserver(Observer* observer);
+    void fireEvents();
     
 };
 

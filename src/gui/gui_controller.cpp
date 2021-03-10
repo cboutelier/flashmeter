@@ -8,10 +8,8 @@ GuiController::GuiController(TFT_eSPI *d, FlashMeterModel* model)
     //this->pages = new Page[5];
     this->model = model;
 
-    this->settingPage = new SettingPage(d, this->model );
-    this->mainPage = new MainPage(d, this->model);
-    
-    this->page = this->mainPage;
+   
+    this->page = NULL;
     isOn = true;
     display = d;
     display->init();
@@ -44,8 +42,12 @@ void GuiController::on()
         digitalWrite(4, HIGH);
         isOn = true;
 
-        this->page = this->mainPage;
+        if( this->page != NULL){
+            delete this->page;
+        } 
+        this->page = new MainPage(this->display, this->model);
         this->page->show();
+        this->model->fireEvents();
     }
 }
 
@@ -56,6 +58,11 @@ void GuiController::off()
         Serial.println("Turning off the display");
         digitalWrite(4, LOW);
         isOn = false;
+
+        if( this->page != NULL){
+            delete this->page;
+            this->page = NULL;
+        } 
     }
 }
 
@@ -98,15 +105,16 @@ void GuiController::show()
 void GuiController::onSettingClick()
 {
 
-    if (this->page->getCode() == "MAIN")
-    {
-        this->on();
-        this->page = this->settingPage;
-        this->page->declineYourId();
-        this->page->show();
+     if( !isOn ){
+        digitalWrite(4, HIGH);
+        isOn = true;
+     }
+
+    if( this->page != NULL){   
+        delete this->page;
     }
-    //
-    // this->page->show();
+    this->page = new SettingPage(this->display, this->model );
+    this->page->show();
 }
 
 void GuiController::onUpClick(){
@@ -142,12 +150,17 @@ bool GuiController::onOkClick(){
 }
 
 bool GuiController::onBackClick(){
-    if( this->page == this->settingPage){
-        this->page = this->mainPage;
+    Serial.println("on back of gui controller");
+    if( this->page != NULL && this->page->getCode() == "SETTINGS"){
+        delete this->page;
+        this->page = new MainPage(this->display, this->model);
         this->page->show();
-        return true;
     }
-    Serial.println("Back not implemented");
-    return false;
+    return true;
+    
+}
+
+void GuiController::buildMainPage(){
+     
 }
 

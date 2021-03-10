@@ -23,6 +23,11 @@ MainPage::MainPage(TFT_eSPI *display, FlashMeterModel* model)
     this->speedArea->attachSubject(this->model);
 }
 
+MainPage::~MainPage(){
+    this->model->unRegisterObserver(this->speedArea);
+    this->model->unRegisterObserver(this->focalArea);
+}
+
 void MainPage::onUp()
 {
     Serial.println("On Up of main page");

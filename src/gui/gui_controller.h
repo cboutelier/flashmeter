@@ -32,6 +32,8 @@ public:
     void onLeftClick();
     bool onOkClick();
     bool onBackClick();
+
+    void buildMainPage();
  
 
 private:

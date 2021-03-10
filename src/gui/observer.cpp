@@ -5,3 +5,4 @@
 void Observer::attachSubject(FlashMeterModel* model){
     model->registerObserver(this);
 }
+
