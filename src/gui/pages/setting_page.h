@@ -17,6 +17,7 @@ class SettingPage :  public Page{
 
     public: 
         SettingPage(TFT_eSPI* display, FlashMeterModel* model);
+        ~SettingPage();
         void onUp() ;
         void onDown();
         void onLeft();

@@ -15,6 +15,10 @@ SettingPage::SettingPage(TFT_eSPI *display, FlashMeterModel *model)
 
 }
 
+SettingPage::~SettingPage(){
+    delete this->renderers;
+}
+
 void SettingPage::onUp()
 {
     if (selectedEntry > 0  && this->isUpDownAllowed())

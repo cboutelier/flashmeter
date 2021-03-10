@@ -17,6 +17,7 @@ protected:
 
 public:
     Page();
+    virtual ~Page();
     virtual void onUp() = 0;
     virtual void onDown() = 0;
     virtual void onLeft() = 0;
@@ -29,6 +30,7 @@ public:
 
     virtual void show() = 0;
     virtual void declineYourId();
+
 };
 
 #endif //PAGE_H

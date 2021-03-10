@@ -135,15 +135,23 @@ void FlashMeterModel::unRegisterObserver(Observer *observer)
     {
         if( this->observers[j] == observer) {
             this->observers[j] = nullptr;
-            this->registeredObservers++;
+            this->registeredObservers--;
             break;
         }
     }
+
 }
 
 void FlashMeterModel::setCurrentFocale(double focale)
 {
     this->currentFocale = String(focale);
+    for (int j = 0; j < this->registeredObservers; j++)
+    {
+        this->observers[j]->onReceiveDataFromSubject(this);
+    }
+}
+
+void FlashMeterModel::fireEvents(){
     for (int j = 0; j < this->registeredObservers; j++)
     {
         this->observers[j]->onReceiveDataFromSubject(this);

@@ -17,6 +17,9 @@
 #define DOWN_PIN 12
 #define BACK_PIN 35
 
+
+ 
+
 const int DEBOUNCE_DELAY = 1000;
 const int READING_TIMEOUT = 10000;
 
@@ -38,6 +41,8 @@ bool okCommand = false;
 bool backCommand = false;
 
 unsigned long lastButtonAction = 0;
+
+int counterForMemory = 0;
 
 void IRAM_ATTR onSettingClick();
 void IRAM_ATTR onOkClick();
@@ -121,8 +126,14 @@ void loop()
 
   delay(100);
 
-   
-  
+  if( counterForMemory >= 100)
+  {
+     uint32_t  free = esp_get_free_heap_size();
+     Serial.print("-----  Free memory: ");
+     Serial.println(free);
+     counterForMemory=0;
+  }
+  counterForMemory++;
    
 
 }

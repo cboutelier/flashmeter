@@ -9,6 +9,7 @@ class MainPage :  public Page{
 
     public: 
         MainPage(TFT_eSPI* display, FlashMeterModel *model);
+        ~MainPage();
         void onUp() ;
         void onDown();
         void onRight();

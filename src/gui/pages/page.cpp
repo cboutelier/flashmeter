@@ -4,6 +4,9 @@ Page::Page(){
    Serial.println("Constructor of page");
 }
 
+Page::~Page(){
+}
+
 
 void Page::show(){
     Serial.println("Show of page");
