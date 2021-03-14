@@ -11,7 +11,8 @@ void SpeedArea::show(){
 }
 
 void SpeedArea::onReceiveDataFromSubject(const FlashMeterModel *model){
-    this->value = String( model->getCurrentLuxValue());
+    //this->value = String( model->getCurrentLuxValue());
+    this->value = "Speed";
     this->show();
 }
  

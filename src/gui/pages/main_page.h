@@ -20,6 +20,7 @@ class MainPage :  public Page{
         void declineYourId();
         Area* focalArea;
         Area* speedArea;
+        Area* infoArea;
 };
 
 #endif //MAIN_PAGE_H
