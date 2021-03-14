@@ -2,6 +2,7 @@
 
 #include "../areas/focal_area.h"
 #include "../areas/speed_area.h"
+#include "../areas/info_area.h"
 
 MainPage::MainPage(TFT_eSPI *display, FlashMeterModel* model)
 {
@@ -21,11 +22,19 @@ MainPage::MainPage(TFT_eSPI *display, FlashMeterModel* model)
     this->speedArea->setBackground(TFT_DARKGREEN);
     this->speedArea->setForeground(TFT_WHITE);
     this->speedArea->attachSubject(this->model);
+
+    this->infoArea = new InfoArea(0,0,240, 40);
+    this->infoArea->setDisplay( display);
+    this->infoArea->setBackground(TFT_COLMOD);
+    this->infoArea->setForeground(TFT_WHITE); 
+    this->infoArea->attachSubject(this->model);
+    Serial.println("End of main page construction");
 }
 
 MainPage::~MainPage(){
     this->model->unRegisterObserver(this->speedArea);
     this->model->unRegisterObserver(this->focalArea);
+    this->model->unRegisterObserver(this->infoArea);
 }
 
 void MainPage::onUp()
@@ -65,6 +74,9 @@ void MainPage::show()
     display->setRotation(1);
     this->focalArea->show();
     this->speedArea->show(); 
+    this->infoArea->show();
+    
+    this->model->fireEvents();
 }
 
 void MainPage::declineYourId()

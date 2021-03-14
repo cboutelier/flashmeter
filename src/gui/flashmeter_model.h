@@ -3,7 +3,7 @@
 
 #include <Arduino.h>
 #include "entry.h"
- 
+
 #define MAX_REGISTERED_OBSERVERS 3
 
 class Observer;
@@ -18,26 +18,26 @@ private:
     int currentApertureIndex;
     */
     int currentMode;
-    long currentLuxValue;
+    float currentLuxValue;
+    int sensitivity;
 
     String currentFocale;
-  
-    
-    
+
     //double currentEVValue;
 
-    Entry* modeEntry;
-    Entry* sensitivityEntry;
-  
-    Observer* observers[MAX_REGISTERED_OBSERVERS];
+    Entry *modeEntry;
+    Entry *sensitivityEntry;
+
+    Observer *observers[MAX_REGISTERED_OBSERVERS];
     int registeredObservers = 0;
-  
+
     void loadFromEEPROM();
+
+    void setSensitivityFromIndex();
 
 protected:
     void (*attachInterruptCallback)();
     void (*detachInterruptCallback)();
-    
 
 public:
     FlashMeterModel();
@@ -46,32 +46,35 @@ public:
     int getCurrentSpeedIndex;
     int getCurrentApertureIndex;
     */
-    long getCurrentLuxValue() const;
+    float getCurrentLuxValue() const;
     /*  double getCurrentEVValue();
     void setCurrentSensibilityIndex();
     void setCurrentSpeedIndex();
     */
-    void setCurrentLuxValue(long luxValue);
+    void setCurrentLuxValue(float luxValue);
     /*   void setCurrentEVValue();*/
 
-    String getCurrentFocale() const {return currentFocale;};
+    String getCurrentFocale() const { return currentFocale; };
 
     void setCurrentFocale(double focale);
 
+    //Sensitivy does not trigger events
+    void setSensitivity(const int sensitivity) { this->sensitivity = sensitivity; }
+    int getSensitivity() const { return this->sensitivity; }
+
     int getCurrentMode();
     void setCurrentMode(int mode);
-    Entry* getEntry(int index);
-    int getEntriesCount(){ return 2;}
+    Entry *getEntry(int index);
+    int getEntriesCount() { return 2; }
 
     bool save();
 
-    void setAttachCallback( void (*attach)());
-    void setDetachCallback( void (*detach)());
+    void setAttachCallback(void (*attach)());
+    void setDetachCallback(void (*detach)());
 
-    void registerObserver(Observer* observer);
-    void unRegisterObserver(Observer* observer);
+    void registerObserver(Observer *observer);
+    void unRegisterObserver(Observer *observer);
     void fireEvents();
-    
 };
 
 #endif //FLASHMETER_MODEL_H

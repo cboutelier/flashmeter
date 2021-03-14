@@ -28,6 +28,9 @@ FlashMeterModel::FlashMeterModel()
     /*  sensitivityEntry->addValue("800");
     sensitivityEntry->addValue("1600");*/
     // sensitivityEntry->setCurrentValueIndex(2);
+
+    this->currentLuxValue = 0.0;
+    
     loadFromEEPROM();
 }
 
@@ -35,6 +38,8 @@ void FlashMeterModel::loadFromEEPROM()
 {
     modeEntry->setCurrentValueIndex(EEPROM.readInt(MODE_INDEX));
     sensitivityEntry->setCurrentValueIndex(EEPROM.readInt(MODE_INDEX + sizeof(int)));
+
+    this->setSensitivityFromIndex();
 }
 
 bool FlashMeterModel::save()
@@ -57,6 +62,10 @@ bool FlashMeterModel::save()
     }
 
     this->attachInterruptCallback();
+
+
+    //Refresh the values on the model
+    this->setSensitivityFromIndex();
     return commit;
 }
 
@@ -85,12 +94,12 @@ void FlashMeterModel::setCurrentMode(int modeIndex)
     this->currentMode = modeIndex;
 }
 
-long FlashMeterModel::getCurrentLuxValue() const
+float FlashMeterModel::getCurrentLuxValue() const
 {
     return this->currentLuxValue;
 }
 
-void FlashMeterModel::setCurrentLuxValue(long luxValue)
+void FlashMeterModel::setCurrentLuxValue(float luxValue)
 {
     this->currentLuxValue = luxValue;
     for (int j = 0; j < this->registeredObservers; j++)
@@ -156,6 +165,12 @@ void FlashMeterModel::fireEvents(){
     {
         this->observers[j]->onReceiveDataFromSubject(this);
     }
+}
+
+void FlashMeterModel::setSensitivityFromIndex(){
+    int currentIndex = sensitivityEntry->getCurrentValueIndex();
+    int sensitivityAsInt = sensitivityEntry->getValue(currentIndex).toInt();
+    this->setSensitivity(sensitivityAsInt);
 }
 
  
