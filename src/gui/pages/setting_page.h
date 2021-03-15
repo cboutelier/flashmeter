@@ -1,7 +1,7 @@
 #ifndef SETTING_PAGE_H
 #define SETTING_PAGE_H
 #include "page.h"
-#include "../flashmeter_model.h"
+#include "../../flashmeter_model.h"
 #include "../entry_renderer.h"
 
 

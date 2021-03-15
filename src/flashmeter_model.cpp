@@ -1,6 +1,6 @@
 #include "flashmeter_model.h"
 #include <EEPROM.h>
-#include "observer.h"
+#include "gui/observer.h"
 
 #define MODE_INDEX 0
 #define SENSITIVITY_INDEX 1

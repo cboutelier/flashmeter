@@ -2,7 +2,7 @@
 #define FLASHMETER_MODEL_H
 
 #include <Arduino.h>
-#include "entry.h"
+#include "gui/entry.h"
 
 #define MAX_REGISTERED_OBSERVERS 3
 

@@ -3,7 +3,7 @@
 #include <Arduino.h>
 #include <TFT_eSPI.h>
 #include "pages/page.h"
-#include "flashmeter_model.h"
+#include "../flashmeter_model.h"
 
 class GuiController
 {

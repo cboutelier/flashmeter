@@ -1,5 +1,5 @@
 #include "info_area.h"
-#include "../flashmeter_model.h"
+#include "../../flashmeter_model.h"
 
 void InfoArea::show()
 {

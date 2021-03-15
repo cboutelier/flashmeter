@@ -5,7 +5,8 @@
 #include <BH1750.h>
 #include <TFT_eSPI.h>
 #include "gui/gui_controller.h"
-#include "gui/flashmeter_model.h"
+#include "flashmeter_model.h"
+#include "light_sensor/light_sensor.h"
 
 #define SCL_PIN 22
 #define SDA_PIN 21
@@ -23,13 +24,16 @@
 const int DEBOUNCE_DELAY = 1000;
 const int READING_TIMEOUT = 10000;
 
-BH1750 lightMeter;
+BH1750 device;
+LightSensor*  lightSensor;
 TFT_eSPI display;
 GuiController *guiController;
 FlashMeterModel *model;
 
 double focale = 1.4;
 long speed = 30;
+
+bool paused = false;
 
 bool toSave = false;
 bool upCommand = false;
@@ -75,13 +79,14 @@ void setup()
   //Specific initialization of the Wire library: because the bh1750 lib does not do it, and because the board uses non standard pins.
   Wire.begin(SDA_PIN, SCL_PIN);
 
-  //Start the sensor in high res mode.
-  lightMeter.begin(BH1750::ONE_TIME_HIGH_RES_MODE);
+   
+  
 
   model = new FlashMeterModel();
   model->setAttachCallback( &attachInterrupts);
   model->setDetachCallback( &detachInterrupts);
   model->setCurrentLuxValue(20);
+  lightSensor = new LightSensor(&device, model);
 
   guiController = new GuiController(&display, model);
 
@@ -120,9 +125,14 @@ void loop()
   if (millis() - lastButtonAction > READING_TIMEOUT)
   {
     guiController->off();
+    paused = true;
   }
 
   manageCommands();
+
+  if( !paused){
+    lightSensor->read();
+  }
 
   delay(100);
 
@@ -144,6 +154,7 @@ void manageCommands()
   {
     guiController->onOkClick();
     okCommand = false;
+    paused = false;
   }
   if (backCommand)
   {
