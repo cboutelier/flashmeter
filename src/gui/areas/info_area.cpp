@@ -1,5 +1,5 @@
 #include "info_area.h"
-#include "../flashmeter_model.h"
+#include "../../flashmeter_model.h"
 
 void InfoArea::show()
 {
@@ -11,14 +11,14 @@ void InfoArea::show()
 
     this->displaySensitivity(yBaseline, fontSize);
     this->displayLuxValue(yBaseline, fontSize);
+    this->displayEVValue(yBaseline + 10, fontSize);
 }
 
 void InfoArea::onReceiveDataFromSubject(const FlashMeterModel *model)
 {
     this->setLuxValue(model->getCurrentLuxValue());
-    Serial.print("Setting lux value ");
-    Serial.println(model->getCurrentLuxValue());
     this->setSensitivity(model->getSensitivity());
+    this->evValue = model->getCurrentEV();
     this->show();
 }
 
@@ -37,28 +37,48 @@ void InfoArea::displaySensitivity(const int yBaseLine, const int fontSize)
 
 void InfoArea::displayLuxValue(const int yBaseLine, const int fontSize)
 {
-    
+
     int _luxValue = this->getLuxValue();
-    
+
     int xPosition = 200;
-    if( _luxValue >= 100){
-        xPosition = xPosition -5;
+    if (_luxValue >= 100)
+    {
+        xPosition = xPosition - 5;
     }
-    if( _luxValue >= 1000){
-        xPosition = xPosition -5;
+    if (_luxValue >= 1000)
+    {
+        xPosition = xPosition - 5;
     }
-    if( _luxValue >= 10000){
-        xPosition = xPosition -5;
+    if (_luxValue >= 10000)
+    {
+        xPosition = xPosition - 5;
     }
     display->setCursor(xPosition, yBaseLine, fontSize);
-    
-    if ( _luxValue > 0)
+
+    if (_luxValue > 0)
     {
-       String luxAsString = (String)_luxValue;
-      
-       display->print( luxAsString + " lux");
-      
-       
+        String luxAsString = (String)_luxValue;
+
+        display->print(luxAsString + " lux");
+    }
+    else
+    {
+        display->print("---");
+    }
+}
+
+void InfoArea::displayEVValue(const int yBaseLine, const int fontSize)
+{
+
+    int xPosition = 195;
+
+    display->setCursor(xPosition, yBaseLine, fontSize);
+
+    if (this->evValue > 0)
+    {
+        String t = "EV: ";
+        t.concat(this->evValue);
+        display->print(t);
     }
     else
     {

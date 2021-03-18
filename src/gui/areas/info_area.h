@@ -11,10 +11,12 @@ class InfoArea : public Area
 private:
     void displaySensitivity(const int yBaseLine, const int fontSize);
     void displayLuxValue( const int yBaseLine, const int fontSize);
+    void displayEVValue( const int yBaseLine, const int fontSize);
 
 protected:
     int sensitivity = 0;
     double luxValue = 0.0;
+    int evValue = 0;
 
 public:
     using Area::Area;

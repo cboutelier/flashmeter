@@ -2,7 +2,7 @@
 #define FLASHMETER_MODEL_H
 
 #include <Arduino.h>
-#include "entry.h"
+#include "gui/entry.h"
 
 #define MAX_REGISTERED_OBSERVERS 3
 
@@ -22,6 +22,8 @@ private:
     int sensitivity;
 
     String currentFocale;
+    //EV value is calculated from lux value.
+    int currentEV;
 
     //double currentEVValue;
 
@@ -52,7 +54,8 @@ public:
     void setCurrentSpeedIndex();
     */
     void setCurrentLuxValue(float luxValue);
-    /*   void setCurrentEVValue();*/
+   
+    int getCurrentEV()const { return currentEV;};
 
     String getCurrentFocale() const { return currentFocale; };
 

@@ -1,5 +1,5 @@
 #include "area.h"
-#include "../flashmeter_model.h"
+#include "../../flashmeter_model.h"
 
 
 Area::Area(int x, int y, int width, int height)

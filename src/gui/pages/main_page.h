@@ -2,7 +2,7 @@
 #define MAIN_PAGE_H
 #include "page.h"
 #include "../areas/area.h"
-#include "../flashmeter_model.h"
+#include "../../flashmeter_model.h"
 
 
 class MainPage :  public Page{
