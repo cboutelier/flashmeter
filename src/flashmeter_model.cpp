@@ -105,10 +105,7 @@ void FlashMeterModel::setCurrentLuxValue(float luxValue)
 {
     this->currentLuxValue = luxValue;
     this->currentEV = (log(luxValue)-log(2.5))/log(2);
-    for (int j = 0; j < this->registeredObservers; j++)
-    {
-        this->observers[j]->onReceiveDataFromSubject(this);
-    }
+    this->fireEvents();
 }
 
 void FlashMeterModel::setAttachCallback(void (*attach)())
@@ -156,11 +153,8 @@ void FlashMeterModel::unRegisterObserver(Observer *observer)
 
 void FlashMeterModel::setCurrentFocale(double focale)
 {
-    this->currentFocale = String(focale);
-    for (int j = 0; j < this->registeredObservers; j++)
-    {
-        this->observers[j]->onReceiveDataFromSubject(this);
-    }
+    this->currentFocale = String(focale,1);
+    this->fireEvents();
 }
 
 void FlashMeterModel::fireEvents(){
@@ -176,4 +170,9 @@ void FlashMeterModel::setSensitivityFromIndex(){
     this->setSensitivity(sensitivityAsInt);
 }
 
+
+void FlashMeterModel::setSpeed( const double speed){
+    this->speed = speed;
+    this->fireEvents();
+}
  

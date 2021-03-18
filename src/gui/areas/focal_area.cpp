@@ -9,6 +9,12 @@ void FocalArea::show()
     display->print("f " + value);
 }
 
+void FocalArea::fillArea(){
+    display->fillRect(this->x, this->y, this->width, this->height, this->background);
+    display->setTextColor(this->foreground, this->background);
+}
+
+
 void FocalArea::onReceiveDataFromSubject(const FlashMeterModel *model)
 {
     String newValue = model->getCurrentFocale();

@@ -10,6 +10,7 @@ class FocalArea : public Area {
     public :
     using Area::Area;
      virtual void show();
+     virtual void fillArea();
      void onReceiveDataFromSubject(const FlashMeterModel* model);
 };
 
