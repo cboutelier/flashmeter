@@ -22,6 +22,8 @@ private:
     int sensitivity;
 
     String currentFocale;
+    //EV value is calculated from lux value.
+    int currentEV;
 
     //double currentEVValue;
 
@@ -52,7 +54,8 @@ public:
     void setCurrentSpeedIndex();
     */
     void setCurrentLuxValue(float luxValue);
-    /*   void setCurrentEVValue();*/
+   
+    int getCurrentEV()const { return currentEV;};
 
     String getCurrentFocale() const { return currentFocale; };
 

@@ -99,9 +99,12 @@ float FlashMeterModel::getCurrentLuxValue() const
     return this->currentLuxValue;
 }
 
+ 
+
 void FlashMeterModel::setCurrentLuxValue(float luxValue)
 {
     this->currentLuxValue = luxValue;
+    this->currentEV = (log(luxValue)-log(2.5))/log(2);
     for (int j = 0; j < this->registeredObservers; j++)
     {
         this->observers[j]->onReceiveDataFromSubject(this);
