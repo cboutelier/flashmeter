@@ -17,10 +17,14 @@ protected:
     int sensitivity = 0;
     double luxValue = 0.0;
     int evValue = 0;
+    boolean sensitivityChanged = true;
+    boolean luxValueChanged = true;
+    boolean evValueChanged = true;
 
 public:
     using Area::Area;
     virtual void show();
+    virtual void fillArea();
     void onReceiveDataFromSubject(const FlashMeterModel *model);
     void setSensitivity(const int s) { this->sensitivity = s; }
     int getSensitivity() const { return this->sensitivity; }

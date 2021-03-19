@@ -18,7 +18,7 @@ class MainPage :  public Page{
         bool onBack();
         void show();
         void declineYourId();
-        Area* focalArea;
+        Area* apertureArea;
         Area* speedArea;
         Area* infoArea;
 };

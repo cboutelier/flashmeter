@@ -21,8 +21,8 @@
 
  
 
-const int DEBOUNCE_DELAY = 1000;
-const int READING_TIMEOUT = 10000;
+const int DEBOUNCE_DELAY = 500;
+const int READING_TIMEOUT = 20000;
 
 BH1750 device;
 LightSensor*  lightSensor;
@@ -87,6 +87,7 @@ void setup()
   model->setDetachCallback( &detachInterrupts);
   model->setCurrentLuxValue(20);
   lightSensor = new LightSensor(&device, model);
+  lightSensor->attachSubject(model);
 
   guiController = new GuiController(&display, model);
 
@@ -165,10 +166,6 @@ void manageCommands()
   {
     guiController->onUpClick();
     upCommand = false;
-
-    focale += 1.0;
-    model->setCurrentFocale(focale);
-    model->setCurrentLuxValue(model->getCurrentLuxValue()+10);
   }
   else if (downCommand)
   {
@@ -221,10 +218,11 @@ void IRAM_ATTR onOkClick()
     lastButtonAction = millis();
   }
   */
+  guiController->on();
   if (millis() - lastButtonAction > DEBOUNCE_DELAY)
   {
     if( millis()-lastButtonAction > READING_TIMEOUT){
-      guiController->on();
+     //Was guiController->on
     }
     lastButtonAction = millis();
     okCommand = true;

@@ -21,6 +21,7 @@ public:
 
     void setDisplay(TFT_eSPI *display);
     virtual void show() = 0;
+    virtual void fillArea() = 0;
 
     virtual void onReceiveDataFromSubject(const FlashMeterModel* model) = 0;
 
@@ -29,6 +30,7 @@ protected:
     int y;
     int width;
     int height;
+    boolean initDone = false;
     String value;
     uint32_t background;
     uint32_t foreground;

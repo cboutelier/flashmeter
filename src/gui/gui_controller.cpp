@@ -3,12 +3,11 @@
 #include "pages/setting_page.h"
 #include "pages/main_page.h"
 
-GuiController::GuiController(TFT_eSPI *d, FlashMeterModel* model)
+GuiController::GuiController(TFT_eSPI *d, FlashMeterModel *model)
 {
     //this->pages = new Page[5];
     this->model = model;
 
-   
     this->page = NULL;
     isOn = true;
     display = d;
@@ -41,10 +40,9 @@ void GuiController::on()
     {
         digitalWrite(4, HIGH);
         isOn = true;
-
-        if( this->page != NULL){
-            delete this->page;
-        } 
+    }
+    if (this->page == NULL)
+    {
         this->page = new MainPage(this->display, this->model);
         this->page->show();
         this->model->fireEvents();
@@ -59,10 +57,11 @@ void GuiController::off()
         digitalWrite(4, LOW);
         isOn = false;
 
-        if( this->page != NULL){
+        if (this->page != NULL)
+        {
             delete this->page;
             this->page = NULL;
-        } 
+        }
     }
 }
 
@@ -105,62 +104,74 @@ void GuiController::show()
 void GuiController::onSettingClick()
 {
 
-     if( !isOn ){
+    if (!isOn)
+    {
         digitalWrite(4, HIGH);
         isOn = true;
-     }
+    }
 
-    if( this->page != NULL){   
+    if (this->page != NULL)
+    {
         delete this->page;
     }
-    this->page = new SettingPage(this->display, this->model );
+    this->page = new SettingPage(this->display, this->model);
     this->page->show();
 }
 
-void GuiController::onUpClick(){
-    if( this->page != NULL){
+void GuiController::onUpClick()
+{
+    if (this->page != NULL)
+    {
         this->page->onUp();
     }
 }
 
-void GuiController::onDownClick(){
-    if( this->page != NULL){
+void GuiController::onDownClick()
+{
+    if (this->page != NULL)
+    {
         this->page->onDown();
     }
 }
 
-void GuiController::onLeftClick(){
-      if( this->page != NULL){
+void GuiController::onLeftClick()
+{
+    if (this->page != NULL)
+    {
         this->page->onLeft();
     }
 }
-void GuiController::onRightClick(){
-      if( this->page != NULL){
-          Serial.println("Right click on gui controller");
+void GuiController::onRightClick()
+{
+    if (this->page != NULL)
+    {
+        Serial.println("Right click on gui controller");
         this->page->onRight();
     }
 }
 
-bool GuiController::onOkClick(){
-      if( this->page != NULL){
+bool GuiController::onOkClick()
+{
+    if (this->page != NULL)
+    {
         Serial.println("OK click on gui controller");
         return this->page->onOk();
     }
     return false;
 }
 
-bool GuiController::onBackClick(){
+bool GuiController::onBackClick()
+{
     Serial.println("on back of gui controller");
-    if( this->page != NULL && this->page->getCode() == "SETTINGS"){
+    if (this->page != NULL && this->page->getCode() == "SETTINGS")
+    {
         delete this->page;
         this->page = new MainPage(this->display, this->model);
         this->page->show();
     }
     return true;
-    
 }
 
-void GuiController::buildMainPage(){
-     
+void GuiController::buildMainPage()
+{
 }
-

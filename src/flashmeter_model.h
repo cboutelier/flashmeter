@@ -4,7 +4,7 @@
 #include <Arduino.h>
 #include "gui/entry.h"
 
-#define MAX_REGISTERED_OBSERVERS 3
+#define MAX_REGISTERED_OBSERVERS 4
 
 class Observer;
 
@@ -21,7 +21,10 @@ private:
     float currentLuxValue;
     int sensitivity;
 
-    String currentFocale;
+    int preferredApertureIndex = 0;
+
+    String currentAperture;
+    double speed;
     //EV value is calculated from lux value.
     int currentEV;
 
@@ -57,13 +60,21 @@ public:
    
     int getCurrentEV()const { return currentEV;};
 
-    String getCurrentFocale() const { return currentFocale; };
+    double getSpeed() const { return speed;};
+    void setSpeed( const double speed);
 
-    void setCurrentFocale(double focale);
+    String getCurrentAperture() const { return currentAperture; };
+
+    void setCurrentAperture(double aperture);
 
     //Sensitivy does not trigger events
     void setSensitivity(const int sensitivity) { this->sensitivity = sensitivity; }
     int getSensitivity() const { return this->sensitivity; }
+    int getSensitivityIndex()const { return this->sensitivityEntry->getCurrentValueIndex(); };
+
+    int getPreferredApertureIndex() const { return this->preferredApertureIndex;};
+    void increaseApertureIndex();
+    void decreaseApertureIndex();
 
     int getCurrentMode();
     void setCurrentMode(int mode);
@@ -71,6 +82,7 @@ public:
     int getEntriesCount() { return 2; }
 
     bool save();
+    void savePreferedAperture();
 
     void setAttachCallback(void (*attach)());
     void setDetachCallback(void (*detach)());

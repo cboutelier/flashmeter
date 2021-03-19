@@ -9,6 +9,7 @@ Area::Area(int x, int y, int width, int height)
     this->width = width;
     this->height = height;
     this->value = "";
+   
 }
 
 int Area::getX() { return this->x; }
@@ -31,6 +32,8 @@ void Area::setForeground(uint32_t fore)
 }
 
 void Area::setDisplay(TFT_eSPI* d){
-    this->display = d;
+    this->display = d; 
 }
+
+ 
 
