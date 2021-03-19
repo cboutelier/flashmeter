@@ -1,6 +1,6 @@
 #include "main_page.h"
 
-#include "../areas/focal_area.h"
+#include "../areas/aperture_area.h"
 #include "../areas/speed_area.h"
 #include "../areas/info_area.h"
 
@@ -11,11 +11,11 @@ MainPage::MainPage(TFT_eSPI *display, FlashMeterModel* model)
     this->model  = model;
     this->display = display;
     this->code = "MAIN";
-    this->focalArea = new FocalArea(00, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
-    this->focalArea->setDisplay(display);
-    this->focalArea->setBackground(TFT_NAVY);
-    this->focalArea->setForeground(TFT_WHITE);
-    this->focalArea->attachSubject(this->model);
+    this->apertureArea = new ApertureArea(00, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
+    this->apertureArea->setDisplay(display);
+    this->apertureArea->setBackground(TFT_NAVY);
+    this->apertureArea->setForeground(TFT_WHITE);
+    this->apertureArea->attachSubject(this->model);
 
     this->speedArea = new SpeedArea(120, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
     this->speedArea->setDisplay(display);
@@ -33,7 +33,7 @@ MainPage::MainPage(TFT_eSPI *display, FlashMeterModel* model)
 
 MainPage::~MainPage(){
     this->model->unRegisterObserver(this->speedArea);
-    this->model->unRegisterObserver(this->focalArea);
+    this->model->unRegisterObserver(this->apertureArea);
     this->model->unRegisterObserver(this->infoArea);
 }
 
@@ -72,7 +72,7 @@ void MainPage::show()
 {
     display->fillScreen(TFT_BLACK);
     display->setRotation(1);
-    this->focalArea->show();
+    this->apertureArea->show();
     this->speedArea->show(); 
     this->infoArea->show();
     

@@ -1,11 +1,11 @@
-#ifndef FOCAL_AREA_H
-#define FOCAL_AREA_H
+#ifndef APERTURE_AREA_H
+#define APERTURE_AREA_H
 
 #include <Arduino.h>
 
 #include "area.h"
 
-class FocalArea : public Area
+class ApertureArea : public Area
 {
 
 public:
@@ -19,4 +19,4 @@ private:
     String getApertureFromIndex();
 };
 
-#endif //FOCAL_AREA_H
+#endif //APERTURE_AREA_H

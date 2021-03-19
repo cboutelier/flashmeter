@@ -1,7 +1,7 @@
-#include "focal_area.h"
+#include "aperture_area.h"
 #include "../../flashmeter_model.h"
 
-void FocalArea::show()
+void ApertureArea::show()
 {
     display->fillRect(this->x, this->y, this->width, this->height, this->background);
     display->setTextColor(this->foreground, this->background);
@@ -9,13 +9,13 @@ void FocalArea::show()
     display->print("f " + this->getApertureFromIndex());
 }
 
-void FocalArea::fillArea(){
+void ApertureArea::fillArea(){
     display->fillRect(this->x, this->y, this->width, this->height, this->background);
     display->setTextColor(this->foreground, this->background);
 }
 
 
-void FocalArea::onReceiveDataFromSubject(const FlashMeterModel *model)
+void ApertureArea::onReceiveDataFromSubject(const FlashMeterModel *model)
 {
     int currentIndex = model->getPreferredApertureIndex();
     if (currentIndex != this->currentIndex)
@@ -26,7 +26,7 @@ void FocalArea::onReceiveDataFromSubject(const FlashMeterModel *model)
 }
 
 
-String FocalArea::getApertureFromIndex(){
+String ApertureArea::getApertureFromIndex(){
     if( this->currentIndex==0){
         return "1.4";
     }else if( this->currentIndex==1){
