@@ -10,11 +10,11 @@ void SpeedArea::show()
     display->print(t);
 }
 
-void SpeedArea::fillArea(){
+void SpeedArea::fillArea()
+{
     display->fillRect(this->x, this->y, this->width, this->height, this->background);
     display->setTextColor(this->foreground, this->background);
 }
-
 
 void SpeedArea::onReceiveDataFromSubject(const FlashMeterModel *model)
 {
@@ -27,7 +27,6 @@ void SpeedArea::onReceiveDataFromSubject(const FlashMeterModel *model)
     }
 }
 
-
 //TODO convert the highest values (up to 32min)
 String SpeedArea::convertValue()
 {
@@ -39,11 +38,11 @@ String SpeedArea::convertValue()
     {
         return "15 s";
     }
-else if (this->speed == 8.0d)
+    else if (this->speed == 8.0d)
     {
         return "8 s";
     }
-else if (this->speed == 4.0d)
+    else if (this->speed == 4.0d)
     {
         return "4 s";
     }
@@ -83,23 +82,27 @@ else if (this->speed == 4.0d)
     {
         return "1/125 s";
     }
-     else if (this->speed == 1 /250.0d)
+    else if (this->speed == 1 / 250.0d)
     {
         return "1/250 s";
-    } else if (this->speed == 1 /500.0d)
+    }
+    else if (this->speed == 1 / 500.0d)
     {
         return "1/500 s";
-    }else if (this->speed == 1 /1000.0d)
+    }
+    else if (this->speed == 1 / 1000.0d)
     {
         return "1/1000 s";
     }
-    else if (this->speed == 1 /2000.0d)
+    else if (this->speed == 1 / 2000.0d)
     {
         return "1/2000 s";
-    }else if (this->speed == 1 /4000.0d)
+    }
+    else if (this->speed == 1 / 4000.0d)
     {
         return "1/4000 s";
-    }else if (this->speed == 1 /8000.0d)
+    }
+    else if (this->speed == 1 / 8000.0d)
     {
         return "1/8000 s";
     }
