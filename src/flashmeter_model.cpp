@@ -104,7 +104,12 @@ float FlashMeterModel::getCurrentLuxValue() const
 void FlashMeterModel::setCurrentLuxValue(float luxValue)
 {
     this->currentLuxValue = luxValue;
-    this->currentEV = (log(luxValue)-log(2.5))/log(2);
+    this->currentEV = (log10(luxValue)-log10(2.5))/log10(2) ;
+    Serial.print("EV without correction: ");
+    Serial.println(this->currentEV);
+    this->currentEV +=  this->sensitivityEntry->getCurrentValueIndex();
+    Serial.print("EV after correction: ");
+    Serial.println(this->currentEV);
     this->fireEvents();
 }
 

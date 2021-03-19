@@ -68,6 +68,7 @@ public:
     //Sensitivy does not trigger events
     void setSensitivity(const int sensitivity) { this->sensitivity = sensitivity; }
     int getSensitivity() const { return this->sensitivity; }
+    int getSensitivityIndex()const { return this->sensitivityEntry->getCurrentValueIndex(); };
 
     int getCurrentMode();
     void setCurrentMode(int mode);

@@ -51,6 +51,18 @@ else if (this->speed == 4.0d)
     {
         return "2 s";
     }
+    else if (this->speed == 1.0d)
+    {
+        return "1 s";
+    }
+    else if (this->speed == 1 / 2.0d)
+    {
+        return "1/2 s";
+    }
+    else if (this->speed == 1 / 4.0d)
+    {
+        return "1/4 s";
+    }
     else if (this->speed == 1 / 8.0d)
     {
         return "1/8 s";

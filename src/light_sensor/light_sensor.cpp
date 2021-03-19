@@ -17,10 +17,12 @@ void LightSensor::read()
     {
         this->model->setCurrentLuxValue(lux);
         this->previousLuxValue = lux;
-        int currentEV = (log(lux)-log(2.5))/log(2);
-        if( currentEV > 0 && currentEV <= 20){
-         this->model->setSpeed(this->speeds[4][currentEV]);
-         this->model->setCurrentFocale(5.6);
+        int currentEV100 = (log10(lux) - log10(2.5)) / log10(2);
+        int currentEVAtSensitivity = currentEV100 + this->model->getSensitivityIndex();
+        if (currentEVAtSensitivity > 0 && currentEVAtSensitivity <= 20)
+        {
+            this->model->setSpeed(this->speeds[3][currentEVAtSensitivity]);
+            this->model->setCurrentFocale(4);
         }
     }
 }
@@ -49,6 +51,28 @@ void LightSensor::buildSpeedArray()
     this->speeds[0][18] = 0;
     this->speeds[0][19] = 0;
     this->speeds[0][20] = 0;
+
+    this->speeds[3][0] = 15.0d;
+    this->speeds[3][1] = 8.0d;
+    this->speeds[3][2] = 4.0d;
+    this->speeds[3][3] = 2.0d;
+    this->speeds[3][4] = 1.0d;
+    this->speeds[3][5] = 1 / 2.0d;
+    this->speeds[3][6] = 1 / 4.0d;
+    this->speeds[3][7] = 1 / 8.0d;
+    this->speeds[3][8] = 1 / 15.0d;
+    this->speeds[3][9] = 1 / 30.0d;
+    this->speeds[3][10] = 1 / 60.0d;
+    this->speeds[3][11] = 1 / 125.0d;
+    this->speeds[3][12] = 1 / 250.0d;
+    this->speeds[3][13] = 1 / 500.0d;
+    this->speeds[3][14] = 1 / 1000.0d;
+    this->speeds[3][15] = 1 / 2000.0;
+    this->speeds[3][16] = 1 / 4000.0;
+    this->speeds[3][17] = 0;
+    this->speeds[3][18] = 0;
+    this->speeds[3][19] = 0;
+    this->speeds[3][20] = 0;
 
     this->speeds[4][0] = 30.0d;
     this->speeds[4][1] = 15.0d;
