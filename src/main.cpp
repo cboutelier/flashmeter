@@ -87,6 +87,7 @@ void setup()
   model->setDetachCallback( &detachInterrupts);
   model->setCurrentLuxValue(20);
   lightSensor = new LightSensor(&device, model);
+  lightSensor->attachSubject(model);
 
   guiController = new GuiController(&display, model);
 
@@ -165,10 +166,6 @@ void manageCommands()
   {
     guiController->onUpClick();
     upCommand = false;
-
-    focale += 1.0;
-    model->setCurrentFocale(focale);
-    model->setCurrentLuxValue(model->getCurrentLuxValue()+10);
   }
   else if (downCommand)
   {

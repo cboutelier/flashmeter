@@ -6,6 +6,11 @@ LightSensor::LightSensor(BH1750 *device, FlashMeterModel *model)
     this->model = model;
     this->device->begin(BH1750::CONTINUOUS_LOW_RES_MODE);
     this->buildSpeedArray();
+   
+}
+
+void LightSensor::onReceiveDataFromSubject(const FlashMeterModel* model){
+    this->previousLuxValue = -1;
 }
 
 void LightSensor::read()
@@ -21,8 +26,8 @@ void LightSensor::read()
         int currentEVAtSensitivity = currentEV100 + this->model->getSensitivityIndex();
         if (currentEVAtSensitivity > 0 && currentEVAtSensitivity <= 20)
         {
-            this->model->setSpeed(this->speeds[3][currentEVAtSensitivity]);
-            this->model->setCurrentFocale(4);
+            this->model->setSpeed(this->speeds[this->model->getPreferredApertureIndex()][currentEVAtSensitivity]);
+            
         }
     }
 }

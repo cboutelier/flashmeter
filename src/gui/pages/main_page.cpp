@@ -39,12 +39,12 @@ MainPage::~MainPage(){
 
 void MainPage::onUp()
 {
-    Serial.println("On Up of main page");
+    this->model->increaseApertureIndex();
 }
 
 void MainPage::onDown()
 {
-    Serial.println("On down of main page");
+    this->model->decreaseApertureIndex();
 }
 
 void MainPage::onRight()

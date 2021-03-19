@@ -105,11 +105,7 @@ void FlashMeterModel::setCurrentLuxValue(float luxValue)
 {
     this->currentLuxValue = luxValue;
     this->currentEV = (log10(luxValue)-log10(2.5))/log10(2) ;
-    Serial.print("EV without correction: ");
-    Serial.println(this->currentEV);
     this->currentEV +=  this->sensitivityEntry->getCurrentValueIndex();
-    Serial.print("EV after correction: ");
-    Serial.println(this->currentEV);
     this->fireEvents();
 }
 
@@ -156,9 +152,9 @@ void FlashMeterModel::unRegisterObserver(Observer *observer)
 
 }
 
-void FlashMeterModel::setCurrentFocale(double focale)
+void FlashMeterModel::setCurrentAperture(double aperture)
 {
-    this->currentFocale = String(focale,1);
+    this->currentAperture = String(aperture,1);
     this->fireEvents();
 }
 
@@ -181,3 +177,17 @@ void FlashMeterModel::setSpeed( const double speed){
     this->fireEvents();
 }
  
+
+void FlashMeterModel::increaseApertureIndex(){
+    if( this->preferredApertureIndex < 9){
+    this->preferredApertureIndex++;
+    this->fireEvents();
+    }
+}
+void FlashMeterModel::decreaseApertureIndex(){
+    if( this->preferredApertureIndex > 0){
+        this->preferredApertureIndex--;
+        this->fireEvents();
+    }
+    
+}
