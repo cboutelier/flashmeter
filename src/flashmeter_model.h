@@ -82,6 +82,7 @@ public:
     int getEntriesCount() { return 2; }
 
     bool save();
+    void savePreferedAperture();
 
     void setAttachCallback(void (*attach)());
     void setDetachCallback(void (*detach)());

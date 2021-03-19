@@ -3,13 +3,16 @@
 #include "gui/observer.h"
 
 #define MODE_INDEX 0
-#define SENSITIVITY_INDEX 1
+
+#define SENSITIVITY_INDEX (0 + __SIZEOF_INT__)
+#define APERTURE_INDEX (0 + 2 * __SIZEOF_INT__)
 
 FlashMeterModel::FlashMeterModel()
 {
 
-    for( int j = 0; j < MAX_REGISTERED_OBSERVERS; j++){
-         this->observers[j] = NULL;
+    for (int j = 0; j < MAX_REGISTERED_OBSERVERS; j++)
+    {
+        this->observers[j] = NULL;
     }
 
     Serial.println("------------- Constructor of FlashMeterModel ----------------");
@@ -30,7 +33,7 @@ FlashMeterModel::FlashMeterModel()
     // sensitivityEntry->setCurrentValueIndex(2);
 
     this->currentLuxValue = 0.0;
-    
+
     loadFromEEPROM();
 }
 
@@ -38,8 +41,16 @@ void FlashMeterModel::loadFromEEPROM()
 {
     modeEntry->setCurrentValueIndex(EEPROM.readInt(MODE_INDEX));
     sensitivityEntry->setCurrentValueIndex(EEPROM.readInt(MODE_INDEX + sizeof(int)));
-
+    preferredApertureIndex = EEPROM.readInt(APERTURE_INDEX);
     this->setSensitivityFromIndex();
+}
+
+void FlashMeterModel::savePreferedAperture()
+{
+    this->detachInterruptCallback();
+    EEPROM.writeInt(APERTURE_INDEX, this->preferredApertureIndex);
+    EEPROM.commit();
+    this->attachInterruptCallback();
 }
 
 bool FlashMeterModel::save()
@@ -51,6 +62,7 @@ bool FlashMeterModel::save()
 
     EEPROM.writeInt(address, modeEntry->getCurrentValueIndex());
     EEPROM.writeInt(address + sizeof(int), sensitivityEntry->getCurrentValueIndex());
+
     bool commit = EEPROM.commit();
     if (commit)
     {
@@ -62,7 +74,6 @@ bool FlashMeterModel::save()
     }
 
     this->attachInterruptCallback();
-
 
     //Refresh the values on the model
     this->setSensitivityFromIndex();
@@ -99,13 +110,11 @@ float FlashMeterModel::getCurrentLuxValue() const
     return this->currentLuxValue;
 }
 
- 
-
 void FlashMeterModel::setCurrentLuxValue(float luxValue)
 {
     this->currentLuxValue = luxValue;
-    this->currentEV = (log10(luxValue)-log10(2.5))/log10(2) ;
-    this->currentEV +=  this->sensitivityEntry->getCurrentValueIndex();
+    this->currentEV = (log10(luxValue) - log10(2.5)) / log10(2);
+    this->currentEV += this->sensitivityEntry->getCurrentValueIndex();
     this->fireEvents();
 }
 
@@ -123,71 +132,78 @@ void FlashMeterModel::registerObserver(Observer *observer)
 {
     if (this->registeredObservers < MAX_REGISTERED_OBSERVERS)
     {
-        for( int j = 0; j < MAX_REGISTERED_OBSERVERS; j++){
-            
-            if( this->observers[j] == NULL){   
+        for (int j = 0; j < MAX_REGISTERED_OBSERVERS; j++)
+        {
+
+            if (this->observers[j] == NULL)
+            {
                 this->observers[j] = observer;
-                this->registeredObservers++;  
+                this->registeredObservers++;
                 break;
             }
-           
         }
-        
     }
 }
 
 void FlashMeterModel::unRegisterObserver(Observer *observer)
 {
-    if (this->registeredObservers == 0){
-        return;
-    } 
-    for( int j = 0; j < MAX_REGISTERED_OBSERVERS; j++)
+    if (this->registeredObservers == 0)
     {
-        if( this->observers[j] == observer) {
+        return;
+    }
+    for (int j = 0; j < MAX_REGISTERED_OBSERVERS; j++)
+    {
+        if (this->observers[j] == observer)
+        {
             this->observers[j] = nullptr;
             this->registeredObservers--;
             break;
         }
     }
-
 }
 
 void FlashMeterModel::setCurrentAperture(double aperture)
 {
-    this->currentAperture = String(aperture,1);
+    this->currentAperture = String(aperture, 1);
     this->fireEvents();
 }
 
-void FlashMeterModel::fireEvents(){
+void FlashMeterModel::fireEvents()
+{
     for (int j = 0; j < this->registeredObservers; j++)
     {
         this->observers[j]->onReceiveDataFromSubject(this);
     }
 }
 
-void FlashMeterModel::setSensitivityFromIndex(){
+void FlashMeterModel::setSensitivityFromIndex()
+{
     int currentIndex = sensitivityEntry->getCurrentValueIndex();
     int sensitivityAsInt = sensitivityEntry->getValue(currentIndex).toInt();
     this->setSensitivity(sensitivityAsInt);
 }
 
-
-void FlashMeterModel::setSpeed( const double speed){
+void FlashMeterModel::setSpeed(const double speed)
+{
     this->speed = speed;
     this->fireEvents();
 }
- 
 
-void FlashMeterModel::increaseApertureIndex(){
-    if( this->preferredApertureIndex < 9){
-    this->preferredApertureIndex++;
-    this->fireEvents();
-    }
-}
-void FlashMeterModel::decreaseApertureIndex(){
-    if( this->preferredApertureIndex > 0){
-        this->preferredApertureIndex--;
+void FlashMeterModel::increaseApertureIndex()
+{
+    if (this->preferredApertureIndex < 9)
+    {
+        this->preferredApertureIndex++;
+        this->savePreferedAperture();
         this->fireEvents();
     }
-    
+}
+void FlashMeterModel::decreaseApertureIndex()
+{
+    if (this->preferredApertureIndex > 0)
+    {
+        this->preferredApertureIndex--;
+        this->savePreferedAperture();
+        this->fireEvents();
+    }
 }
