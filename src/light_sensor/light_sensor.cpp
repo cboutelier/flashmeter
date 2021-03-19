@@ -27,7 +27,8 @@ void LightSensor::read()
         if (currentEVAtSensitivity > 0 && currentEVAtSensitivity <= 20)
         {
             this->model->setSpeed(this->speeds[this->model->getPreferredApertureIndex()][currentEVAtSensitivity]);
-            
+        }else{
+            this->model->setSpeed(0.0);
         }
     }
 }
