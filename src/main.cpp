@@ -18,9 +18,6 @@
 #define DOWN_PIN 12
 #define BACK_PIN 35
 
-
- 
-
 const int DEBOUNCE_DELAY = 500;
 const int READING_TIMEOUT = 20000;
 
