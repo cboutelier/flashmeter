@@ -18,8 +18,10 @@ protected:
     BH1750 *device;
     FlashMeterModel *model;
     float previousLuxValue = -1.0;
-    double speeds[10][21];
+    double speeds[28];
 
+    int calculateSpeedIndex( int EV100, int sensibilityIndex, int focalIndex) const;
 private:
-    void buildSpeedArray();
+    void buildSpArray();
+
 };
