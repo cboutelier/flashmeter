@@ -82,6 +82,28 @@ void LightSensor::buildSpeedArray()
     this->speeds[1][19] = 0;
     this->speeds[1][20] = 0;
 
+    this->speeds[2][0] = 8.0;
+    this->speeds[2][1] = 4.0;
+    this->speeds[2][2] = 2.0;
+    this->speeds[2][3] = 1.0;
+    this->speeds[2][4] = 1 / 2.0;
+    this->speeds[2][5] = 1 / 4.0;
+    this->speeds[2][6] = 1 / 8.0;
+    this->speeds[2][7] = 1 / 15.0;
+    this->speeds[2][8] = 1 / 30.0;
+    this->speeds[2][9] = 1 / 60.0;
+    this->speeds[2][10] = 1 / 125.0;
+    this->speeds[2][11] = 1 / 250.0;
+    this->speeds[2][12] = 1 / 500.0;
+    this->speeds[2][13] = 1 / 1000.0;
+    this->speeds[2][14] = 1 / 2000.0;
+    this->speeds[2][15] = 1 / 4000.0;
+    this->speeds[2][16] = 1 / 8000.0;
+    this->speeds[2][17] = 0;
+    this->speeds[2][18] = 0;
+    this->speeds[2][19] = 0;
+    this->speeds[2][20] = 0;
+
     this->speeds[3][0] = 15.0;
     this->speeds[3][1] = 8.0;
     this->speeds[3][2] = 4.0;
