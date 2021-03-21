@@ -22,6 +22,6 @@ protected:
 
     int calculateSpeedIndex( int EV100, int sensibilityIndex, int focalIndex) const;
 private:
-    void buildSpArray();
+    void buildSpeedArray();
 
 };
