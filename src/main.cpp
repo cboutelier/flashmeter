@@ -3,10 +3,12 @@
 
 #include <Wire.h>
 #include <BH1750.h>
-#include <TFT_eSPI.h>
-#include "gui/gui_controller.h"
-#include "flashmeter_model.h"
-#include "light_sensor/light_sensor.h"
+#include <model/model.h>
+#include <repository.h>
+#include <gui/gui_controller.h>
+#include "EspEEPROMRepository.h"
+#include "TFT_display_device.h"
+#include <light_sensor.h>
 
 #define SCL_PIN 22
 #define SDA_PIN 21
@@ -23,9 +25,13 @@ const int READING_TIMEOUT = 20000;
 
 BH1750 device;
 LightSensor*  lightSensor;
-TFT_eSPI display;
 GuiController *guiController;
-FlashMeterModel *model;
+//FlashMeterModel *model;
+Model* model;
+Repository* repository;
+
+//For some reasons, the TFT object must be instanced here
+TFTDisplayDevice display;
 
 double focale = 1.4;
 long speed = 30;
@@ -62,7 +68,8 @@ void setup()
 
   //Alway initiate a serial connection...
   Serial.begin(9600);
-  EEPROM.begin(512);
+
+  repository = new EspEEPROMRepository(&attachInterrupts, &detachInterrupts);
 
   //declare pin for settings as Input
   pinMode(SET_PIN, INPUT_PULLUP);
@@ -74,19 +81,20 @@ void setup()
   pinMode(BACK_PIN, INPUT_PULLUP);
 
   //Specific initialization of the Wire library: because the bh1750 lib does not do it, and because the board uses non standard pins.
-  Wire.begin(SDA_PIN, SCL_PIN);
+ // Wire.begin(SDA_PIN, SCL_PIN);
 
-   
+  model = new Model( repository);
   
 
-  model = new FlashMeterModel();
+  /*model = new FlashMeterModel();
   model->setAttachCallback( &attachInterrupts);
   model->setDetachCallback( &detachInterrupts);
   model->setCurrentLuxValue(20);
   lightSensor = new LightSensor(&device, model);
   lightSensor->attachSubject(model);
+  */
 
-  guiController = new GuiController(&display, model);
+  guiController = new GuiController( &display,  model);
 
   attachInterrupts();
 
@@ -122,15 +130,17 @@ void loop()
 
   if (millis() - lastButtonAction > READING_TIMEOUT)
   {
-    guiController->off();
+   // guiController->off();
     paused = true;
   }
 
-  manageCommands();
+  //manageCommands();
 
+/*
   if( !paused){
     lightSensor->read();
   }
+  */
 
   delay(100);
 
@@ -150,38 +160,38 @@ void manageCommands()
 {
   if (okCommand)
   {
-    guiController->onOkClick();
+    //guiController->onOkClick();
     okCommand = false;
     paused = false;
   }
   if (backCommand)
   {
-    guiController->onBackClick();
+    //guiController->onBackClick();
     backCommand = false;
   }
   if (upCommand)
   {
-    guiController->onUpClick();
+    //guiController->onUpClick();
     upCommand = false;
   }
   else if (downCommand)
   {
-    guiController->onDownClick();
+    //guiController->onDownClick();
     downCommand = false;
   }
   else if (rightCommand)
   {
-    guiController->onRightClick();
+    //guiController->onRightClick();
     rightCommand = false;
   }
   else if (leftCommand)
   {
-    guiController->onLeftClick();
+    //guiController->onLeftClick();
     leftCommand = false;
   }
   else if (settingsCommand)
   {
-    guiController->onSettingClick();
+    //guiController->onSettingClick();
     settingsCommand = false;
   }
 }
@@ -215,7 +225,7 @@ void IRAM_ATTR onOkClick()
     lastButtonAction = millis();
   }
   */
-  guiController->on();
+  //guiController->on();
   if (millis() - lastButtonAction > DEBOUNCE_DELAY)
   {
     if( millis()-lastButtonAction > READING_TIMEOUT){

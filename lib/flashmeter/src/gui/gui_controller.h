@@ -1,28 +1,21 @@
 #ifndef GUI_H
 #define GUI_H
-#include <Arduino.h>
-#include <TFT_eSPI.h>
-#include "pages/page.h"
-#include "../flashmeter_model.h"
+
+#include "../model/model.h"
+#include "../display/display_device.h"
 
 class GuiController
 {
 public:
-
-    FlashMeterModel* model;
-
-    Page* page;
-    Page* settingPage;
-    Page* mainPage;
-    
+    GuiController(DisplayDevice* d, Model* model);
+ 
     int currentPage = 0;
     int usedPages = 0;
 
-    GuiController(TFT_eSPI* d, FlashMeterModel* model);
-    void setLux(float lux);
+   
     void off();
     void on();
-    void addPage(Page* p);
+     
     void show();
 
     void onSettingClick();
@@ -33,13 +26,12 @@ public:
     bool onOkClick();
     bool onBackClick();
 
-    void buildMainPage();
- 
 
 private:
-    TFT_eSPI *display;
+    DisplayDevice *display;
     void showSplash();
     bool isOn;
+    Model* model;
 };
 
 #endif

@@ -1,42 +1,24 @@
 #include "gui_controller.h"
-#include <Arduino.h>
-#include "pages/setting_page.h"
-#include "pages/main_page.h"
 
-GuiController::GuiController(TFT_eSPI *d, FlashMeterModel *model)
+GuiController::GuiController(DisplayDevice *d, Model *model)
 {
     //this->pages = new Page[5];
     this->model = model;
 
-    this->page = NULL;
+    //this->page = NULL;
     isOn = true;
     display = d;
-    display->init();
+
+    /*
     display->fillScreen(TFT_BLACK);
     display->setTextColor(TFT_GREEN, TFT_BLACK);
+    */
     this->showSplash();
-}
-
-void GuiController::setLux(float luxValue)
-{
-
-    if (display)
-    {
-        digitalWrite(4, HIGH);
-        isOn = true;
-        display->fillScreen(TFT_BLACK);
-        display->setTextColor(TFT_GREEN, TFT_BLACK);
-        display->setRotation(1);
-        display->setCursor(100, 60, 4);
-        display->print(luxValue, 0);
-        display->setCursor(155, 70, 1);
-        display->print(F(" Lux"));
-    }
 }
 
 void GuiController::on()
 {
-    if (!isOn)
+    /* if (!isOn)
     {
         digitalWrite(4, HIGH);
         isOn = true;
@@ -47,11 +29,12 @@ void GuiController::on()
         this->page->show();
         this->model->fireEvents();
     }
+    */
 }
 
 void GuiController::off()
 {
-    if (isOn)
+    /*  if (isOn)
     {
         Serial.println("Turning off the display");
         digitalWrite(4, LOW);
@@ -62,7 +45,7 @@ void GuiController::off()
             delete this->page;
             this->page = NULL;
         }
-    }
+    }*/
 }
 
 /*
@@ -72,39 +55,25 @@ void GuiController::showSplash()
 {
     if (display)
     {
-        display->fillScreen(TFT_BLUE);
-        display->setTextColor(TFT_WHITE, TFT_BLUE);
+        display->fillScreen(0x001F);
+        display->setTextColor(0xFFFF, 0x001F);
         display->setRotation(1);
         display->setCursor(40, 60, 4);
-        display->print(F("FLASHMETER"));
-        delay(1000);
+        display->print("FLASHMETER");
+        
     }
-}
-
-void GuiController::addPage(Page *page)
-{
-    Serial.println("..................................");
-    Serial.println("Adding a page to the collection...");
-    //page->setDisplay(display);
-    //this->pages[this->usedPages] = page;
-
-    this->page = page;
-    this->page->declineYourId();
-
-    Serial.print((long)&this->page, DEC);
-    Serial.println("..................................");
 }
 
 void GuiController::show()
 {
     this->on();
-    this->page->show();
+    // this->page->show();
 }
 
 void GuiController::onSettingClick()
 {
 
-    if (!isOn)
+    /*   if (!isOn)
     {
         digitalWrite(4, HIGH);
         isOn = true;
@@ -116,62 +85,65 @@ void GuiController::onSettingClick()
     }
     this->page = new SettingPage(this->display, this->model);
     this->page->show();
+    */
 }
 
 void GuiController::onUpClick()
 {
-    if (this->page != NULL)
+    /*   if (this->page != NULL)
     {
         this->page->onUp();
     }
+    */
 }
 
 void GuiController::onDownClick()
 {
-    if (this->page != NULL)
+    /*  if (this->page != NULL)
     {
         this->page->onDown();
     }
+    */
 }
 
 void GuiController::onLeftClick()
 {
-    if (this->page != NULL)
+    /*   if (this->page != NULL)
     {
         this->page->onLeft();
     }
+    */
 }
 void GuiController::onRightClick()
 {
-    if (this->page != NULL)
+    /*  if (this->page != NULL)
     {
         Serial.println("Right click on gui controller");
         this->page->onRight();
     }
+    */
 }
 
 bool GuiController::onOkClick()
 {
-    if (this->page != NULL)
+    /*   if (this->page != NULL)
     {
         Serial.println("OK click on gui controller");
         return this->page->onOk();
     }
+    */
     return false;
 }
 
 bool GuiController::onBackClick()
 {
-    Serial.println("on back of gui controller");
+    /*  Serial.println("on back of gui controller");
     if (this->page != NULL && this->page->getCode() == "SETTINGS")
     {
         delete this->page;
         this->page = new MainPage(this->display, this->model);
         this->page->show();
     }
+    */
     return true;
-}
-
-void GuiController::buildMainPage()
-{
 }
