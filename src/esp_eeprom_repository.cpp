@@ -1,4 +1,4 @@
-#include "EspEEPROMRepository.h"
+#include "esp_eeprom_repository.h"
 #include <EEPROM.h>
 
 EspEEPROMRepository::EspEEPROMRepository(void (*attach)(), void (*detach)())
