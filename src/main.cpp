@@ -9,6 +9,7 @@
 #include "EspEEPROMRepository.h"
 #include "TFT_display_device.h"
 #include <light_sensor.h>
+#include "ArduinoConsole.h"
 
 #define SCL_PIN 22
 #define SDA_PIN 21
@@ -29,6 +30,7 @@ GuiController *guiController;
 //FlashMeterModel *model;
 Model* model;
 Repository* repository;
+ArduinoConsole console;
 
 //For some reasons, the TFT object must be instanced here
 TFTDisplayDevice display;
@@ -94,7 +96,7 @@ void setup()
   lightSensor->attachSubject(model);
   */
 
-  guiController = new GuiController( &display,  model);
+  guiController = new GuiController( &display,  model, &console);
 
   attachInterrupts();
 

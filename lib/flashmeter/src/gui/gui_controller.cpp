@@ -1,13 +1,16 @@
 #include "gui_controller.h"
+#include "pages/main_page.h"
 
-GuiController::GuiController(DisplayDevice *d, Model *model)
+GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator* console)
 {
     //this->pages = new Page[5];
     this->model = model;
+    this->console = console;
 
     //this->page = NULL;
     isOn = true;
     display = d;
+    this->page = new MainPage(this->display, this->model, this->console, "MAIN");
 
     /*
     display->fillScreen(TFT_BLACK);
@@ -62,6 +65,7 @@ void GuiController::showSplash()
         display->print("FLASHMETER");
         
     }
+    this->console->println("FLASHMETER");
 }
 
 void GuiController::show()
