@@ -136,7 +136,7 @@ void loop()
     paused = true;
   }
 
-  //manageCommands();
+  manageCommands();
 
 /*
   if( !paused){
@@ -173,12 +173,12 @@ void manageCommands()
   }
   if (upCommand)
   {
-    //guiController->onUpClick();
+    guiController->onUpClick();
     upCommand = false;
   }
   else if (downCommand)
   {
-    //guiController->onDownClick();
+    guiController->onDownClick();
     downCommand = false;
   }
   else if (rightCommand)

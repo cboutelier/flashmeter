@@ -10,8 +10,7 @@ void TFTDisplayDevice::fillRect(int x, int y, int width, int height, int backgro
 }
 void TFTDisplayDevice::print(char const *text)
 {
-    this->display.print(text);
-   
+   this->display.print(text);
 }
 
 void TFTDisplayDevice::turnOn()

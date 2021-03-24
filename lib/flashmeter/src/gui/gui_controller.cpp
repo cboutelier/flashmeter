@@ -16,7 +16,8 @@ GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator* c
     display->fillScreen(TFT_BLACK);
     display->setTextColor(TFT_GREEN, TFT_BLACK);
     */
-    this->showSplash();
+    //this->showSplash();
+    this->page->show();
 }
 
 void GuiController::on()
@@ -94,20 +95,19 @@ void GuiController::onSettingClick()
 
 void GuiController::onUpClick()
 {
-    /*   if (this->page != NULL)
+    if (this->page != nullptr)
     {
-        this->page->onUp();
+        this->page->onButtonEvent(1);
     }
-    */
+    
 }
 
 void GuiController::onDownClick()
 {
-    /*  if (this->page != NULL)
+    if (this->page != nullptr)
     {
-        this->page->onDown();
+        this->page->onButtonEvent(2);
     }
-    */
 }
 
 void GuiController::onLeftClick()

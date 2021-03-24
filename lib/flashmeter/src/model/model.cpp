@@ -115,3 +115,22 @@ void Model::unRegisterObserver(Observer *observer)
         }
     }
 }
+
+void Model::increaseApertureIndex()
+{
+    if (this->preferredApertureIndex < 9)
+    {
+        this->preferredApertureIndex++;
+       // this->savePreferedAperture();
+        this->fireEvents();
+    }
+}
+void Model::decreaseApertureIndex()
+{
+    if (this->preferredApertureIndex > 0)
+    {
+        this->preferredApertureIndex--;
+       // this->savePreferedAperture();
+        this->fireEvents();
+    }
+}

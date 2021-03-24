@@ -18,6 +18,9 @@ public:
     virtual void registerObserver(Observer *observer);
     virtual void unRegisterObserver(Observer *observer);
 
+    void increaseApertureIndex();
+    void decreaseApertureIndex();
+
 private:
 
     Repository* repository;
