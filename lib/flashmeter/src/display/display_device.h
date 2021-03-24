@@ -13,6 +13,7 @@ public:
     virtual void setTextColor( int foreground_color, int background_color);
     virtual void setRotation(int r);
     virtual void setCursor( int x, int y, int font_size);
+    virtual void fillTriangle( unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color );
 };
 
 #endif //DISPLAY_DEVICE

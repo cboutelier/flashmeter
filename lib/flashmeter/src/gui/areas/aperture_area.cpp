@@ -23,10 +23,8 @@ void ApertureArea::show()
    
     display->print(apertureMessage);
    
-     
-    
-
-  /*  display->fillTriangle(5, 65, 10, 55, 15, 65, this->foreground);
+    //Add the cursors
+    display->fillTriangle(5, 65, 10, 55, 15, 65, this->foreground);
     if (this->currentIndex > 0)
     {
         display->fillTriangle(5, 110, 10, 120, 15, 110, this->foreground);
@@ -35,7 +33,7 @@ void ApertureArea::show()
     {
         display->fillRect(4, 118, 12, 12, this->background);
     }
-    */
+     
 }
 
 void ApertureArea::fillArea()

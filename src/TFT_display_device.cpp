@@ -37,3 +37,7 @@ void TFTDisplayDevice::setCursor(int x, int y, int font_size)
 {
     this->display.setCursor(x, y, font_size);
 }
+
+void TFTDisplayDevice::fillTriangle(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color){
+    this->display.fillTriangle(x0,y0,x1, y1, x2,y2, color);
+}

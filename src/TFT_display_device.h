@@ -15,6 +15,7 @@ public:
     void setTextColor( int foreground_color, int background_color);
     void setRotation(int r);
     void setCursor( int x, int y, int font_size);
+    void fillTriangle(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color);
 
 private:
     TFT_eSPI display;
