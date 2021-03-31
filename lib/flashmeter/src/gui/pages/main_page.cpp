@@ -29,6 +29,17 @@ void MainPage::onButtonEvent(const unsigned int button)
     {
         this->model->decreaseApertureIndex();
     }
+    else if (button == 3)
+    {
+        this->speedArea->setFocus(false);
+        this->apertureArea->setFocus(true);
+    }
+    else if (button == 4)
+    {
+        this->speedArea->setFocus(true);
+        this->apertureArea->setFocus(false);
+    }
+
     //if event UP  this->model->increaseApertureIndex();
     //if event DOWN  this->model->decreaseApertureIndex();
 }
@@ -51,13 +62,14 @@ void MainPage::buildAreas()
 
     this->apertureArea = new ApertureArea(this->display, this->console, 0, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
 
-    this->apertureArea->setBackground(0x0000FF);
-    this->apertureArea->setForeground(0xFFFFFF);
+    this->apertureArea->setBackground(TFT_BLUE);
+    this->apertureArea->setForeground(0xFFFF);
     this->apertureArea->attachSubject(this->model);
+    this->apertureArea->setFocus(true);
 
     this->speedArea = new SpeedArea(this->display, this->console, 120, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
-    this->speedArea->setBackground(0xFF00FF);
-    this->speedArea->setForeground(0xFFFFFF);
+    this->speedArea->setBackground(TFT_BLUE);
+    this->speedArea->setForeground(0xFFFF);
     this->speedArea->attachSubject(this->model);
 
     /*

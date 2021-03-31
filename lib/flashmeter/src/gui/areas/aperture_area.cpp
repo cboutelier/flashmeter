@@ -1,39 +1,44 @@
 #include "aperture_area.h"
 #include <string.h>
 #include <stdio.h>
- 
 
-
-ApertureArea::ApertureArea(DisplayDevice* d, ConsoleDelegator *console, int x, int y, int width, int height) : Area(d, x, y, width, height)
+ApertureArea::ApertureArea(DisplayDevice *d, ConsoleDelegator *console, int x, int y, int width, int height) : Area(d, x, y, width, height)
 {
     this->console = console;
     this->buildApertures();
-
 }
 
 void ApertureArea::show()
 {
+    this->console->print("focus");
+    if( this->hasFocus()){
+        this->console->println(" yes");
+    }
     display->fillRect(this->x, this->y, this->width, this->height, this->background);
     display->setTextColor(this->foreground, this->background);
     display->setCursor(30, 78, 4);
-    
+
     char apertureMessage[60];
-    strcpy( apertureMessage, "f");
-    strcat( apertureMessage, this->getApertureFromIndex() );
-   
+    strcpy(apertureMessage, "f");
+    strcat(apertureMessage, this->getApertureFromIndex());
+
     display->print(apertureMessage);
-   
+
+    unsigned int color = this->background;
+    if (this->hasFocus())
+    {
+        color = this->foreground;
+    }
     //Add the cursors
-    display->fillTriangle(5, 65, 10, 55, 15, 65, this->foreground);
+    display->fillTriangle(5, 65, 10, 55, 15, 65, color);
     if (this->currentIndex > 0)
     {
-        display->fillTriangle(5, 110, 10, 120, 15, 110, this->foreground);
+        display->fillTriangle(5, 110, 10, 120, 15, 110, color);
     }
     else
     {
-        display->fillRect(4, 118, 12, 12, this->background);
+        display->fillRect(4, 118, 12, 12, color);
     }
-     
 }
 
 void ApertureArea::fillArea()
@@ -42,9 +47,9 @@ void ApertureArea::fillArea()
     display->setTextColor(this->foreground, this->background);
 }
 
-void ApertureArea::onReceiveDataFromSubject(const Observable *m )
+void ApertureArea::onReceiveDataFromSubject(const Observable *m)
 {
-    Model* model = (Model*) m;
+    Model *model = (Model *)m;
     int currentIndex = model->getPreferredApertureIndex();
     if (currentIndex != this->currentIndex)
     {
@@ -67,7 +72,7 @@ void ApertureArea::buildApertures()
     this->apertures[9] = "32";
 }
 
-char const * ApertureArea::getApertureFromIndex()
+char const *ApertureArea::getApertureFromIndex()
 {
     if (this->currentIndex >= 0 && this->currentIndex < 10)
     {

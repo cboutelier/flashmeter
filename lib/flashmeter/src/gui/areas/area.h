@@ -13,6 +13,8 @@ public:
     int getY();
     int getWidth();
     int getHeight();
+    bool hasFocus();
+    void setFocus(bool b);
 
     unsigned int getBackground();
     unsigned int getForeground();
@@ -30,6 +32,7 @@ protected:
     int width;
     int height;
     bool initDone = false;
+    bool focus = false;
 
     unsigned int background;
     unsigned int foreground;

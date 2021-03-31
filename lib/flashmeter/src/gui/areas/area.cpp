@@ -7,8 +7,6 @@ Area::Area(DisplayDevice *d, int x, int y, int width, int height)
     this->width = width;
     this->height = height;
     this->display = d;
-
-   
 }
 
 int Area::getX() { 
@@ -38,4 +36,16 @@ void Area::setBackground(unsigned int back)
 void Area::setForeground(unsigned int fore)
 {
     this->foreground = fore;
+}
+
+void Area::setFocus(bool b){
+    bool oldFocus = this->focus;
+    this->focus = b;
+    if( oldFocus!=this->focus){
+        this->show();
+    }
+}
+
+bool Area::hasFocus(){
+    return this->focus;
 }

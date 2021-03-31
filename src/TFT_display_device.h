@@ -7,12 +7,12 @@
 class TFTDisplayDevice: public DisplayDevice{
 public:
     TFTDisplayDevice();
-    void fillRect( int x, int y,  int width,  int height, int background);
+    void fillRect( int x, int y,  int width,  int height, unsigned int background);
     void print( char const *text) ;
     void turnOn() ;
     void turnOff() ;
-    void fillScreen( const int color);
-    void setTextColor( int foreground_color, int background_color);
+    void fillScreen( const unsigned int color);
+    void setTextColor( unsigned int foreground_color, unsigned int background_color);
     void setTextSize( unsigned char textSize);
     void setRotation(int r);
     void setCursor( int x, int y, unsigned char font_size);

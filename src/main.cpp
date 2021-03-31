@@ -186,12 +186,12 @@ void manageCommands()
   }
   else if (rightCommand)
   {
-    //guiController->onRightClick();
+    guiController->onRightClick();
     rightCommand = false;
   }
   else if (leftCommand)
   {
-    //guiController->onLeftClick();
+    guiController->onLeftClick();
     leftCommand = false;
   }
   else if (settingsCommand)

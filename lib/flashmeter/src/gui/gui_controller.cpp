@@ -117,6 +117,10 @@ void GuiController::onLeftClick()
         this->page->onLeft();
     }
     */
+    if (this->page != nullptr)
+    {
+        this->page->onButtonEvent(3);
+    }
 }
 void GuiController::onRightClick()
 {
@@ -126,6 +130,10 @@ void GuiController::onRightClick()
         this->page->onRight();
     }
     */
+    if (this->page != nullptr)
+    {
+        this->page->onButtonEvent(4);
+    }
 }
 
 bool GuiController::onOkClick()

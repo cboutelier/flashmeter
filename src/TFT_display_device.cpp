@@ -4,7 +4,7 @@ TFTDisplayDevice::TFTDisplayDevice()
 {
     this->display.init();
 }
-void TFTDisplayDevice::fillRect(int x, int y, int width, int height, int background)
+void TFTDisplayDevice::fillRect(int x, int y, int width, int height, unsigned int background)
 {
     this->display.fillRect(x, y, width, height, background);
 }
@@ -21,11 +21,11 @@ void TFTDisplayDevice::turnOff()
 {
       digitalWrite(4, LOW);
 }
-void TFTDisplayDevice::fillScreen(const int color)
+void TFTDisplayDevice::fillScreen(const unsigned int color)
 {
     this->display.fillScreen(color);
 }
-void TFTDisplayDevice::setTextColor(int foreground_color, int background_color)
+void TFTDisplayDevice::setTextColor(unsigned int foreground_color, unsigned int background_color)
 {
     this->display.setTextColor(foreground_color, background_color);
 }

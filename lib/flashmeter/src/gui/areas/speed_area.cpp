@@ -10,13 +10,11 @@ SpeedArea::SpeedArea(DisplayDevice *d, ConsoleDelegator *console, int x, int y, 
 
 void SpeedArea::show()
 {
-    this->console->println("Show of speed area");
     display->fillRect(this->x, this->y, this->width, this->height, this->background);
     display->setTextColor(this->foreground, this->background);
     display->setCursor(130, 78, 4);
     display->setTextSize(1);
     display->print(this->speeds[this->index]);
-    //display->print("ok");
 }
 
 void SpeedArea::fillArea()
