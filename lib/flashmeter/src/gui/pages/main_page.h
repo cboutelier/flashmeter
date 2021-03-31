@@ -16,8 +16,8 @@ public:
     void show();
 
     Area* apertureArea;
-    /*    Area* speedArea;
-        Area* infoArea;*/
+    Area* speedArea;
+    /*    Area* infoArea;*/
 };
 
 #endif //MAIN_PAGE_H

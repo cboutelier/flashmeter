@@ -1,9 +1,12 @@
 #ifndef LIGHT_SENSOR_DEVICE
 #define LIGHT_SENSOR_DEVICE
 
-class LightSensorDevice
+#include <BH1750.h>
+
+class LightSensorDevice : public BH1750
 {
 
+/*
 public:
     enum Mode
     {
@@ -23,7 +26,7 @@ public:
         ONE_TIME_LOW_RES_MODE = 0x23
     };
     void begin(int resolution);
-    float readLightLevel();
+    float readLightLevel();*/
 };
 
 #endif //LIGHT_SENSOR_DEVICE

@@ -24,7 +24,8 @@
 const int DEBOUNCE_DELAY = 500;
 const int READING_TIMEOUT = 20000;
 
-BH1750 device;
+//BH1750 device;
+LightSensorDevice* device;
 LightSensor*  lightSensor;
 GuiController *guiController;
 
@@ -83,7 +84,7 @@ void setup()
   pinMode(BACK_PIN, INPUT_PULLUP);
 
   //Specific initialization of the Wire library: because the bh1750 lib does not do it, and because the board uses non standard pins.
- // Wire.begin(SDA_PIN, SCL_PIN);
+  Wire.begin(SDA_PIN, SCL_PIN);
 
   model = new Model( repository);
   
@@ -92,9 +93,11 @@ void setup()
   model->setAttachCallback( &attachInterrupts);
   model->setDetachCallback( &detachInterrupts);
   model->setCurrentLuxValue(20);
-  lightSensor = new LightSensor(&device, model);
-  lightSensor->attachSubject(model);
   */
+  device = new LightSensorDevice();
+  lightSensor = new LightSensor(device, model, &console);
+  lightSensor->attachSubject(model);
+  
 
   guiController = new GuiController( &display,  model, &console);
 
@@ -133,16 +136,16 @@ void loop()
   if (millis() - lastButtonAction > READING_TIMEOUT)
   {
    // guiController->off();
-    paused = true;
+    //paused = true;
   }
 
   manageCommands();
 
-/*
+
   if( !paused){
     lightSensor->read();
   }
-  */
+
 
   delay(100);
 

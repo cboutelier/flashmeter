@@ -33,9 +33,13 @@ void TFTDisplayDevice::setRotation(int r)
 {
     this->display.setRotation(r);
 }
-void TFTDisplayDevice::setCursor(int x, int y, int font_size)
+void TFTDisplayDevice::setCursor(int x, int y, unsigned char font_size)
 {
     this->display.setCursor(x, y, font_size);
+}
+
+void TFTDisplayDevice::setTextSize( unsigned char textSize){
+    this->display.setTextSize( textSize);
 }
 
 void TFTDisplayDevice::fillTriangle(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color){

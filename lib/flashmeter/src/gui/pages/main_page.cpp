@@ -1,9 +1,10 @@
 #include "main_page.h"
 
 #include "../areas/aperture_area.h"
-/*
+
 #include "../areas/speed_area.h"
-#include "../areas/info_area.h"*/
+
+/*#include "../areas/info_area.h"*/
 
 MainPage::MainPage(DisplayDevice *d, Model *model, ConsoleDelegator *console, char const *code) : Page(d, model, console, code)
 {
@@ -12,7 +13,7 @@ MainPage::MainPage(DisplayDevice *d, Model *model, ConsoleDelegator *console, ch
 
 MainPage::~MainPage()
 {
-    //this->model->unRegisterObserver(this->speedArea);
+    this->model->unRegisterObserver(this->speedArea);
     this->model->unRegisterObserver(this->apertureArea);
     //this->model->unRegisterObserver(this->infoArea);
 }
@@ -37,9 +38,9 @@ void MainPage::show()
     display->fillScreen(0xffffff);
     display->setRotation(1);
     this->apertureArea->show();
-    /*
-    this->speedArea->show(); 
-    this->infoArea->show();*/
+    this->speedArea->show();
+
+    /*this->infoArea->show();*/
 
     //this->model->fireEvents();
 }
@@ -53,8 +54,13 @@ void MainPage::buildAreas()
     this->apertureArea->setBackground(0x0000FF);
     this->apertureArea->setForeground(0xFFFFFF);
     this->apertureArea->attachSubject(this->model);
+
+    this->speedArea = new SpeedArea(this->display, this->console, 120, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
+    this->speedArea->setBackground(0xFF00FF);
+    this->speedArea->setForeground(0xFFFFFF);
+    this->speedArea->attachSubject(this->model);
+
     /*
-this->speedArea = new SpeedArea(120, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
 this->speedArea->setDisplay(display);
 this->speedArea->setBackground(TFT_DARKGREEN);
 this->speedArea->setForeground(TFT_WHITE);

@@ -45,6 +45,20 @@ void Model::setSpeed(const double speed, bool fireEvent)
     }
 }
 
+void Model::setSpeedIndex(const int speedIndex, bool fireEvent)
+{
+    this->speedIndex = speedIndex;
+    if (fireEvent)
+    {
+        this->fireEvents();
+    }
+}
+
+int Model::getSpeedIndex() const
+{
+    return this->speedIndex;
+}
+
 int Model::getSensitivityIndex() const
 {
     return this->sensitivityIndex;
@@ -81,6 +95,15 @@ void Model::save()
         repository->saveKey("MODE", this->modeIndex);
     }
 }
+
+void Model::savePreferedAperture()
+{
+    if (this->repository != nullptr)
+    {
+        repository->saveKey("APERTURE", this->preferredApertureIndex);
+    }
+}
+
 
 void Model::registerObserver(Observer *observer)
 {
@@ -121,7 +144,7 @@ void Model::increaseApertureIndex()
     if (this->preferredApertureIndex < 9)
     {
         this->preferredApertureIndex++;
-       // this->savePreferedAperture();
+        this->savePreferedAperture();
         this->fireEvents();
     }
 }
@@ -130,7 +153,7 @@ void Model::decreaseApertureIndex()
     if (this->preferredApertureIndex > 0)
     {
         this->preferredApertureIndex--;
-       // this->savePreferedAperture();
+        this->savePreferedAperture();
         this->fireEvents();
     }
 }

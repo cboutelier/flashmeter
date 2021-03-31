@@ -6,36 +6,45 @@ EspEEPROMRepository::EspEEPROMRepository(void (*attach)(), void (*detach)())
     EEPROM.begin(512);
     this->attachInterruptCallback = attach;
     this->detachInterruptCallback = detach;
+    
 }
 
-int EspEEPROMRepository::loadKey(const char *key) const
+int EspEEPROMRepository::loadKey(char const *key) 
 {
-    return 0;
+    int value;
+    this->detachInterruptCallback();
+    int address = getAddress(key);
+    value = EEPROM.readInt( address );
+    this->attachInterruptCallback();
+    return value;
 }
 
-void EspEEPROMRepository::saveKey(const char *key, int value)
+void EspEEPROMRepository::saveKey( char  const *key, int value)
 {
     //Detach interruption to allow use of the memory
     this->detachInterruptCallback();
 
-   /* int address = MODE_INDEX;
+    // int address = MODE_INDEX;
 
-    EEPROM.writeInt(address, modeEntry->getCurrentValueIndex());
-    EEPROM.writeInt(address + sizeof(int), sensitivityEntry->getCurrentValueIndex());
-
-    bool commit = EEPROM.commit();
-    if (commit)
-    {
-        Serial.println("Could commit");
-    }
-    else
-    {
-        Serial.println("Couldnt commit");
-    }
+    EEPROM.writeInt(getAddress(key),value);
+    EEPROM.commit();
+   
 
     this->attachInterruptCallback();
 
     //Refresh the values on the model
-    this->setSensitivityFromIndex();
-    */
+    //this->setSensitivityFromIndex();
+     
+}
+
+/* repository->saveKey("SENSITIVITY", this->sensitivityIndex);
+        repository->saveKey("APERTURE", this->preferredApertureIndex);
+        repository->saveKey("MODE", this->modeIndex);
+        */
+
+int EspEEPROMRepository::getAddress(char const *key){
+    if( strcmp( key, "APERTURE") == 0){
+        return 0 + 2*sizeof(int);
+    }
+    return 0;
 }

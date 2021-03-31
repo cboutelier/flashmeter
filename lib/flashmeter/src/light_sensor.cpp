@@ -1,18 +1,19 @@
 #include <math.h>
 #include "light_sensor.h"
 
-
-LightSensor::LightSensor(LightSensorDevice *device, Model *model)
+LightSensor::LightSensor(LightSensorDevice *device, Model *model, ConsoleDelegator *console)
 {
     this->device = device;
     this->model = model;
+    this->console = console;
     this->device->begin(LightSensorDevice::CONTINUOUS_LOW_RES_MODE);
     this->buildSpeedArray();
 }
 
-void LightSensor::onReceiveDataFromSubject(const Model *model)
+void LightSensor::onReceiveDataFromSubject(const Observable *model)
 {
     this->previousLuxValue = -1;
+    
 }
 
 int LightSensor::calculateSpeedIndex(int EV100, int sensibilityIndex, int apertureIndex) const
@@ -34,6 +35,7 @@ int LightSensor::calculateSpeedIndex(int EV100, int sensibilityIndex, int apertu
 void LightSensor::read()
 {
 
+  //  this->console->println("Read");
     //get the value of the sensor
     float lux = this->device->readLightLevel();
     if (lux != this->previousLuxValue)
@@ -45,9 +47,11 @@ void LightSensor::read()
         int currentEVAtSensitivity = currentEV100 + this->model->getSensitivityIndex();
         if (currentEVAtSensitivity >= -1 && currentEVAtSensitivity <= 20)
         {
-            double speed = this->speeds[this->calculateSpeedIndex(currentEV100, this->model->getSensitivityIndex(), this->model->getPreferredApertureIndex())];
-            //TODO: check if event must be fired here.
-            this->model->setSpeed(speed, true);
+            int speedIndex = this->calculateSpeedIndex(currentEV100, this->model->getSensitivityIndex(), this->model->getPreferredApertureIndex());
+            double speed = this->speeds[speedIndex];
+
+            this->model->setSpeed(speed, false);
+            this->model->setSpeedIndex(speedIndex, true);
         }
         else
         {
@@ -88,4 +92,5 @@ void LightSensor::buildSpeedArray()
     this->speeds[24] = 1 / 8000.0;
     this->speeds[25] = 1 / 16000.0;
     this->speeds[26] = 1 / 32000.0;
+
 }
