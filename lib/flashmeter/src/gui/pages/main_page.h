@@ -17,7 +17,7 @@ public:
 
     Area* apertureArea;
     Area* speedArea;
-    /*    Area* infoArea;*/
+    Area* infoArea;
 };
 
 #endif //MAIN_PAGE_H

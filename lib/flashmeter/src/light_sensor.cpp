@@ -42,9 +42,11 @@ void LightSensor::read()
     {
         this->model->setCurrentLuxValue(lux, false);
         this->previousLuxValue = lux;
-        int currentEV100 = (log10(lux) - log10(2.5)) / log10(2);
+        int currentEV100 = (int)((log10(lux) - log10(2.5)) / log10(2));
 
         int currentEVAtSensitivity = currentEV100 + this->model->getSensitivityIndex();
+        this->model->setCurrentEV(currentEVAtSensitivity);
+        
         if (currentEVAtSensitivity >= -1 && currentEVAtSensitivity <= 20)
         {
             int speedIndex = this->calculateSpeedIndex(currentEV100, this->model->getSensitivityIndex(), this->model->getPreferredApertureIndex());
