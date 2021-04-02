@@ -58,8 +58,6 @@ void MainPage::show()
 
 void MainPage::buildAreas()
 {
-    this->console->println("Build areas on main page");
-
     this->apertureArea = new ApertureArea(this->display, this->console, 0, 40, 120, 95); //40: padding top for all kind of information, 95 is the complement to 135
 
     this->apertureArea->setBackground(TFT_BLUE);

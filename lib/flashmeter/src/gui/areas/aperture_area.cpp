@@ -10,10 +10,6 @@ ApertureArea::ApertureArea(DisplayDevice *d, ConsoleDelegator *console, int x, i
 
 void ApertureArea::show()
 {
-    this->console->print("focus");
-    if( this->hasFocus()){
-        this->console->println(" yes");
-    }
     display->fillRect(this->x, this->y, this->width, this->height, this->background);
     display->setTextColor(this->foreground, this->background);
     display->setCursor(30, 78, 4);
@@ -37,7 +33,7 @@ void ApertureArea::show()
     }
     else
     {
-        display->fillRect(4, 118, 12, 12, color);
+        display->fillRect(4, 118, 12, 12, this->background);
     }
 }
 

@@ -14,7 +14,9 @@ void SpeedArea::show()
     display->setTextColor(this->foreground, this->background);
     display->setCursor(130, 78, 4);
     display->setTextSize(1);
-    display->print(this->speeds[this->index]);
+    if( this->index >= 0){
+      display->print(this->speeds[this->index]);
+    }
 }
 
 void SpeedArea::fillArea()
