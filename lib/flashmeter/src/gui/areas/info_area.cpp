@@ -39,19 +39,20 @@ void InfoArea::onReceiveDataFromSubject(const Observable *observable)
         this->luxValueChanged = true;
         this->setLuxValue(model->getCurrentLuxValue());
     }
-    /* if (this->getSensitivity() != model->getSensitivity())
+
+    if (this->getSensitivity() != model->getSensitivityIndex())
     {
         this->sensitivityChanged = true;
-        this->setSensitivity(model->getSensitivity());
+        this->setSensitivity(model->getSensitivityIndex());
+        strcpy(this->sensitivityValue, model->getSensitivityValue());
     }
-    */
 
     if (this->evValue != model->getCurrentEV())
     {
         this->evValue = model->getCurrentEV();
         this->evValueChanged = true;
     }
-    
+
     this->show();
 }
 
@@ -64,7 +65,11 @@ void InfoArea::displaySensitivity(const int yBaseLine, const int fontSize)
     display->setCursor(5, yBaseLine, fontSize);
     if (this->getSensitivity() > 0)
     {
-        //display->print(((String)this->getSensitivity()) + " ISO");
+        char msg[30];
+        strcpy(msg, this->sensitivityValue);
+        strcat(msg, " ISO");
+
+        display->print(msg);
         this->sensitivityChanged = false;
     }
     else
@@ -131,4 +136,14 @@ void InfoArea::displayEVValue(const int yBaseLine, const int fontSize)
         display->print("---");
     }
     evValueChanged = false;
+}
+
+const char *InfoArea::getSensitvityValue() const
+{
+    return this->sensitivityValue;
+}
+
+void InfoArea::setSensitivityValue(const char *value)
+{
+    strcpy(this->sensitivityValue, value);
 }

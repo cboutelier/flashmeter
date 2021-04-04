@@ -4,6 +4,11 @@
 #include <observable.h>
 #include <repository.h>
 
+#define MAX_SENSITIVITY_INDEX 10
+
+/**
+ * Supported ISO values: 2^n  (100/200/400/800)
+ **/
 class Model : public Observable
 {
 
@@ -16,6 +21,8 @@ public:
     void setSpeedIndex(const int speedIndex, bool fireEvent);
 
     int getSensitivityIndex() const;
+    void setSensitivityIndex(const int newIndex);
+    const char *getSensitivityValue() const;
     int getPreferredApertureIndex() const;
     int getSpeedIndex() const;
     void setCurrentEV(const int ev) { this->currentEV = ev; };
@@ -37,6 +44,7 @@ private:
     int preferredApertureIndex = 0;
 
     int sensitivityIndex = 0;
+    char sensitivityValue[20];
 
     int modeIndex = 0;
 

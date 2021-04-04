@@ -1,4 +1,7 @@
 #include "model.h"
+#include <math.h>
+#include <stdio.h>
+#include <string.h>
 
 Model::Model(Repository *repo)
 {
@@ -63,6 +66,23 @@ int Model::getSensitivityIndex() const
 {
     return this->sensitivityIndex;
 }
+
+void Model::setSensitivityIndex(const int newIndex)
+{
+    if (newIndex >= 0 && newIndex < MAX_SENSITIVITY_INDEX)
+    {
+        this->sensitivityIndex = newIndex;
+        int isoValue = (int)(pow(2.0, this->sensitivityIndex) * 100);
+        sprintf(this->sensitivityValue, "%i", isoValue);
+        this->fireEvents();
+    }
+}
+
+const char *Model::getSensitivityValue() const
+{
+    return this->sensitivityValue;
+}
+
 int Model::getPreferredApertureIndex() const
 {
     return this->preferredApertureIndex;
@@ -80,9 +100,11 @@ void Model::load()
 {
     if (this->repository != nullptr)
     {
-        this->sensitivityIndex = repository->loadKey("SENSITIVITY");
+        int sensIndex = repository->loadKey("SENSITIVITY");
         this->preferredApertureIndex = repository->loadKey("APERTURE");
         this->modeIndex = repository->loadKey("MODE");
+
+        setSensitivityIndex(sensIndex);
     }
 }
 
@@ -103,7 +125,6 @@ void Model::savePreferedAperture()
         repository->saveKey("APERTURE", this->preferredApertureIndex);
     }
 }
-
 
 void Model::registerObserver(Observer *observer)
 {
