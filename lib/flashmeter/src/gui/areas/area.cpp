@@ -9,8 +9,9 @@ Area::Area(DisplayDevice *d, int x, int y, int width, int height)
     this->display = d;
 }
 
-int Area::getX() { 
-    return this->x; 
+int Area::getX()
+{
+    return this->x;
 }
 
 int Area::getY() { return this->y; }
@@ -24,8 +25,9 @@ unsigned int Area::getBackground()
     return this->background;
 }
 
-unsigned int Area::getForeground() { 
-    return this->foreground; 
+unsigned int Area::getForeground()
+{
+    return this->foreground;
 }
 
 void Area::setBackground(unsigned int back)
@@ -38,14 +40,27 @@ void Area::setForeground(unsigned int fore)
     this->foreground = fore;
 }
 
-void Area::setFocus(bool b){
+void Area::setFocus(bool b)
+{
     bool oldFocus = this->focus;
     this->focus = b;
-    if( oldFocus!=this->focus){
+    if (oldFocus != this->focus)
+    {
         this->show();
     }
 }
 
-bool Area::hasFocus(){
+bool Area::hasFocus()
+{
     return this->focus;
+}
+
+int Area::getRelativeX(int x)
+{
+    return getX() + x;
+}
+
+int Area::getRelativeY(int y)
+{
+    return getY() + y;
 }

@@ -18,7 +18,7 @@ Model::Model(Repository *repo)
 
      
     sensitivityEntry = new Entry(1);
-    sensitivityEntry->setEntryName("Sensitivity");
+    sensitivityEntry->setEntryName("ISO");
     sensitivityEntry->addValue("100");
     sensitivityEntry->addValue("200");
     sensitivityEntry->addValue("400");
@@ -105,6 +105,9 @@ void Model::load()
         this->modeIndex = repository->loadKey("MODE");
 
         setSensitivityIndex(sensIndex);
+        getModeEntry()->setCurrentValueIndex(this->modeIndex);
+        getSensitivityEntry()->setCurrentValueIndex(sensIndex);
+        
     }
 }
 

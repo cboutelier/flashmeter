@@ -35,6 +35,9 @@ public:
     void increaseApertureIndex();
     void decreaseApertureIndex();
 
+    Entry *getModeEntry() { return this->modeEntry; };
+    Entry *getSensitivityEntry(){ return this->sensitivityEntry;};
+
 private:
     Repository *repository;
 
@@ -59,8 +62,8 @@ private:
     Observer *observers[MAX_REGISTERED_OBSERVERS];
     int registeredObservers = 0;
 
-    Entry* modeEntry;
-    Entry* sensitivityEntry;
+    Entry *modeEntry;
+    Entry *sensitivityEntry;
 
     void fireEvents() const;
     void load();

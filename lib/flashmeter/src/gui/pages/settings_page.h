@@ -13,6 +13,7 @@ private:
     void adjustSelectedEntry();
     bool isUpDownAllowed();
     Area* titleArea; 
+    Area* settingsListArea;
 
 protected:
     //EntryRenderer *renderers;

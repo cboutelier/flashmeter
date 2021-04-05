@@ -37,6 +37,9 @@ protected:
     unsigned int background;
     unsigned int foreground;
     DisplayDevice *display;
+
+    int getRelativeX(int x);
+    int getRelativeY(int y);
 };
 
 #endif //AREA_H
