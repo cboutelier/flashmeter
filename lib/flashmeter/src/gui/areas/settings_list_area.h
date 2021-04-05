@@ -10,6 +10,7 @@ class SettingsListArea : public Area
 private:
     ConsoleDelegator *console;
     Entry** entries;
+    int entryCount = 0;
 
 protected:
 public:
@@ -22,6 +23,10 @@ public:
     void addEntry( Entry* entry, const int index);
     void displayEntries();
     void displayEntry(Entry* entry, int index);
+     void onButtonEvent(const unsigned int button);
+
+     void onDown( int index);
+     void onUp( int index);
 
 };
 

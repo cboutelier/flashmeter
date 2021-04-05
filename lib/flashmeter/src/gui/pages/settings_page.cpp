@@ -15,7 +15,7 @@ void SettingPage::buildAreas()
 {
     this->titleArea = new TitleArea(this->display, this->console, 0, 0, 240, 40); //40: padding top for all kind of information, 95 is the complement to 135
     this->titleArea->setBackground(TFT_GOLD);
-    this->titleArea->setForeground(0xFFFF);
+    this->titleArea->setForeground(TFT_BLACK);
 
     this->settingsListArea = new SettingsListArea(this->display, this->console, 0, 40, 240, 95);
     this->settingsListArea->setBackground(TFT_BLACK);
@@ -35,4 +35,6 @@ void SettingPage::show()
 
 void SettingPage::onButtonEvent(const unsigned int button)
 {
+     ((SettingsListArea *)this->settingsListArea)->onButtonEvent( button);
+    
 }

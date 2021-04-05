@@ -24,7 +24,7 @@ void TitleArea::show()
     }
     display->setTextColor(this->foreground, this->background);
     display->setCursor( 60, 10, 4);
-    display->drawXBitmap(10, 4, settings_32px_bits, 32, 32, TFT_WHITE, TFT_GOLD);
+    display->drawXBitmap(10, 4, settings_32px_bits, 32, 32, TFT_BLACK, TFT_GOLD);
     display->print("SETTINGS");
 
  }

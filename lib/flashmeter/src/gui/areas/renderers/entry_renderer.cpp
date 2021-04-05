@@ -16,14 +16,31 @@ EntryRenderer::EntryRenderer(DisplayDevice *display, Entry *entry, int relativeX
 void EntryRenderer::show()
 {
     display->setCursor(10, areaBaseY + 8 + index * 20, 2);
+
+    if (entry->isSelected())
+    {
+        display->setTextColor(this->background_color, this->foreground_color);
+    }
+
+    display->print(entry->getEntryName());
+
     char msg[50];
+    display->setTextColor(this->foreground_color, this->background_color);
+
     if (entry->getCurrentValueIndex() < 0)
     {
-        sprintf(msg, "%s : ---", entry->getEntryName());
+        sprintf(msg, " : ---");
     }
     else
     {
-        sprintf(msg, "%s : %s", entry->getEntryName(), entry->getValue(entry->getCurrentValueIndex()));
+        sprintf(msg, " : %s", entry->getValue(entry->getCurrentValueIndex()));
     }
     display->print(msg);
+}
+
+void EntryRenderer::setInitialColors(unsigned int background, unsigned int foreground, unsigned int selected)
+{
+    this->background_color = background;
+    this->foreground_color = foreground;
+    this->selected_color = selected;
 }
