@@ -22,6 +22,7 @@ protected:
     bool sensitivityChanged = true;
     bool luxValueChanged = true;
     bool evValueChanged = true;
+    bool ambiantMode = true;
 
 public:
     InfoArea(DisplayDevice *d, ConsoleDelegator *console,  int x, int y, int width, int height);
@@ -34,6 +35,8 @@ public:
     double getLuxValue() const { return this->luxValue; }
     void setSensitivityValue(const char *value);
     const char* getSensitvityValue() const;
+    bool isAmbiantMode() const { return ambiantMode;};
+    
 };
 
 #endif //INFO_AREA_H

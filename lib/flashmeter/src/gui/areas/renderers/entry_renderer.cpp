@@ -1,6 +1,7 @@
 #include "entry_renderer.h"
 #include <string.h>
 #include <stdio.h>
+#include "../icons/flash.xbm"
 
 EntryRenderer::EntryRenderer(DisplayDevice *display, Entry *entry, int relativeX, int relativeY, int index)
 {
@@ -34,6 +35,7 @@ void EntryRenderer::show()
     else
     {
         sprintf(msg, " : %s", entry->getValue(entry->getCurrentValueIndex()));
+      //  display->drawXBitmap( 10,50, flash_bits, flashbits_width,flashbits_height, TFT_GOLD, TFT_BLACK );
     }
     display->print(msg);
 }

@@ -29,6 +29,8 @@ public:
     void setCurrentEV(const int ev) { this->currentEV = ev; };
     int getCurrentEV() const { return this->currentEV; };
 
+    int getModeIndex() const { return this->modeIndex;};
+
     virtual void registerObserver(Observer *observer);
     virtual void unRegisterObserver(Observer *observer);
 

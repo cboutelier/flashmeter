@@ -3,6 +3,8 @@
 
 #include <stdio.h>
 #include <string.h>
+#include "icons/sun.xbm"
+#include "icons/flash.xbm"
 
 InfoArea::InfoArea(DisplayDevice *d, ConsoleDelegator *console, int x, int y, int width, int height) : Area(d, x, y, width, height)
 {
@@ -29,6 +31,12 @@ void InfoArea::show()
     this->displaySensitivity(yBaseline, fontSize);
     this->displayLuxValue(yBaseline, fontSize);
     this->displayEVValue(yBaseline + 10, fontSize);
+    if( this->ambiantMode){
+        this->display->drawXBitmap(5, 20, sun_bits, sun_width, sun_height, this->foreground, this->background);
+    }else{
+        this->display->drawXBitmap(5, 20, flash_bits, sun_width, sun_height, this->foreground, this->background);
+    }
+
 }
 
 void InfoArea::onReceiveDataFromSubject(const Observable *observable)
@@ -52,6 +60,12 @@ void InfoArea::onReceiveDataFromSubject(const Observable *observable)
         this->evValue = model->getCurrentEV();
         this->evValueChanged = true;
     }
+    if( model->getModeIndex() == 0){
+        this->ambiantMode = true;
+    }else{
+        this->ambiantMode = false;
+    }
+   
 
     this->show();
 }
