@@ -11,7 +11,7 @@ Model::Model(Repository *repo)
         this->observers[j] = nullptr;
     }
 
-    /*modeEntry = new Entry(0);
+    modeEntry = new Entry(0);
     modeEntry->setEntryName("Mode");
     modeEntry->addValue("Ambient");
     modeEntry->addValue("Flash");
@@ -22,9 +22,9 @@ Model::Model(Repository *repo)
     sensitivityEntry->addValue("100");
     sensitivityEntry->addValue("200");
     sensitivityEntry->addValue("400");
-     ensitivityEntry->addValue("800");
+    sensitivityEntry->addValue("800");
     sensitivityEntry->addValue("1600"); 
-    */
+    
 
     this->currentLuxValue = 0.0;
 

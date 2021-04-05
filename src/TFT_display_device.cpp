@@ -45,3 +45,7 @@ void TFTDisplayDevice::setTextSize( unsigned char textSize){
 void TFTDisplayDevice::fillTriangle(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color){
     this->display.fillTriangle(x0,y0,x1, y1, x2,y2, color);
 }
+
+void TFTDisplayDevice::drawXBitmap( unsigned int x, unsigned int y,  unsigned char* bmp, unsigned int width, unsigned int height, unsigned int color, unsigned int bgcolor){
+    this->display.drawXBitmap( x, y, bmp, width, height, color, bgcolor);
+}

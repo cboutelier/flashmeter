@@ -3,6 +3,7 @@
 
 #include <observable.h>
 #include <repository.h>
+#include "entry.h"
 
 #define MAX_SENSITIVITY_INDEX 10
 
@@ -57,6 +58,9 @@ private:
 
     Observer *observers[MAX_REGISTERED_OBSERVERS];
     int registeredObservers = 0;
+
+    Entry* modeEntry;
+    Entry* sensitivityEntry;
 
     void fireEvents() const;
     void load();

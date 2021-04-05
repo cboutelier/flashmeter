@@ -17,6 +17,7 @@ public:
     void setRotation(int r);
     void setCursor( int x, int y, unsigned char font_size);
     void fillTriangle(unsigned int x0, unsigned int y0, unsigned int x1, unsigned int y1, unsigned int x2, unsigned int y2, unsigned int color);
+    void drawXBitmap( unsigned int x, unsigned int y,  unsigned char* bmp, unsigned int width, unsigned int height, unsigned int color, unsigned int bgcolor);
 
 private:
     TFT_eSPI display;

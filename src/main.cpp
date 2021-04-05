@@ -196,7 +196,7 @@ void manageCommands()
   }
   else if (settingsCommand)
   {
-    //guiController->onSettingClick();
+    guiController->onSettingClick();
     settingsCommand = false;
   }
 }

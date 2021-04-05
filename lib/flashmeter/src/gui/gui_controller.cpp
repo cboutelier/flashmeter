@@ -1,5 +1,6 @@
 #include "gui_controller.h"
 #include "pages/main_page.h"
+#include "pages/settings_page.h"
 
 GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator* console)
 {
@@ -83,14 +84,15 @@ void GuiController::onSettingClick()
         digitalWrite(4, HIGH);
         isOn = true;
     }
+    */
 
-    if (this->page != NULL)
+    if (this->page != nullptr)
     {
         delete this->page;
     }
-    this->page = new SettingPage(this->display, this->model);
+    this->page = new SettingPage(this->display,this->model, this->console, "SETTINGS");
     this->page->show();
-    */
+    
 }
 
 void GuiController::onUpClick()
