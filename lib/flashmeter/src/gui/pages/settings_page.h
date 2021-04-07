@@ -12,8 +12,8 @@ private:
     int selectedEntry = 0;
     void adjustSelectedEntry();
     bool isUpDownAllowed();
-    Area* titleArea; 
-    Area* settingsListArea;
+    Area *titleArea;
+    Area *settingsListArea;
 
 protected:
     //EntryRenderer *renderers;
@@ -24,6 +24,7 @@ public:
     ~SettingPage();
     void onButtonEvent(const unsigned int button);
     void show();
+    static void refreshCallback(void *this_pointer);
 };
 
 #endif //SETTING_PAGE_H

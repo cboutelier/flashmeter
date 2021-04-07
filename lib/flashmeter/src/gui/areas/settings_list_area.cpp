@@ -223,8 +223,7 @@ void SettingsListArea::onValidateSettingCallback(int value, void *this_pointer)
 {
     SettingsListArea *self = static_cast<SettingsListArea *>(this_pointer);
     self->onValidateSetting(value);
-    self->initDone = false;
-    self->show();
+    
 }
 
 void SettingsListArea::onValidateSetting(int value)
@@ -243,4 +242,5 @@ void SettingsListArea::onValidateSetting(int value)
             break;
         }
     }
+    this->refreshPageCallback(this->page);
 }

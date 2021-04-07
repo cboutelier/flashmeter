@@ -23,6 +23,12 @@ void SettingPage::buildAreas()
     ((SettingsListArea *)this->settingsListArea)->initEntries(3);
     ((SettingsListArea *)this->settingsListArea)->addEntry(this->model->getModeEntry(), 0);
     ((SettingsListArea *)this->settingsListArea)->addEntry(this->model->getSensitivityEntry(), 1);
+    ((SettingsListArea *)this->settingsListArea)->setRefreshPageCallback(this->refreshCallback, this);
+}
+void SettingPage::refreshCallback(void *page)
+{
+    SettingPage *self = static_cast<SettingPage *>(page);
+    self->show();
 }
 
 void SettingPage::show()
@@ -35,6 +41,5 @@ void SettingPage::show()
 
 void SettingPage::onButtonEvent(const unsigned int button)
 {
-     ((SettingsListArea *)this->settingsListArea)->onButtonEvent( button);
-    
+    ((SettingsListArea *)this->settingsListArea)->onButtonEvent(button);
 }

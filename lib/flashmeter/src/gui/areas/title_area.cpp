@@ -18,10 +18,7 @@ void TitleArea::fillArea()
 
 void TitleArea::show()
 {
-    if (!this->initDone)
-    {
-        this->fillArea();
-    }
+    this->fillArea();
     display->setTextColor(this->foreground, this->background);
     display->setCursor( 60, 10, 4);
     display->drawXBitmap(10, 4, settings_32px_bits, 32, 32, TFT_BLACK, TFT_GOLD);
