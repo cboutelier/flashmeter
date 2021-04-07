@@ -30,6 +30,8 @@ public:
     int getCurrentEV() const { return this->currentEV; };
 
     int getModeIndex() const { return this->modeIndex;};
+    void setModeIndex(const int mode);
+
 
     virtual void registerObserver(Observer *observer);
     virtual void unRegisterObserver(Observer *observer);
@@ -40,6 +42,8 @@ public:
     Entry *getModeEntry() { return this->modeEntry; };
     Entry *getSensitivityEntry(){ return this->sensitivityEntry;};
 
+    static void onValidateSettingCallback(int key, int value, void *this_pointer);
+
 private:
     Repository *repository;
 
@@ -47,12 +51,12 @@ private:
 
     int sensitivity;
 
-    int preferredApertureIndex = 0;
+    int preferredApertureIndex = -1;
 
-    int sensitivityIndex = 0;
+    int sensitivityIndex = -1;
     char sensitivityValue[20];
 
-    int modeIndex = 0;
+    int modeIndex = -1;
 
     double speed;
 

@@ -126,12 +126,6 @@ void GuiController::onLeftClick()
 }
 void GuiController::onRightClick()
 {
-    /*  if (this->page != NULL)
-    {
-        Serial.println("Right click on gui controller");
-        this->page->onRight();
-    }
-    */
     if (this->page != nullptr)
     {
         this->page->onButtonEvent(4);
@@ -140,12 +134,12 @@ void GuiController::onRightClick()
 
 bool GuiController::onOkClick()
 {
-    /*   if (this->page != NULL)
+      if (this->page != nullptr)
     {
-        Serial.println("OK click on gui controller");
-        return this->page->onOk();
+        
+        this->page->onButtonEvent(6);
     }
-    */
+    
     return false;
 }
 

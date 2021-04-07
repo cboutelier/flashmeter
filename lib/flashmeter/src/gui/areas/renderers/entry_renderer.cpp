@@ -2,6 +2,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "../icons/flash.xbm"
+#include "../entry_area.h"
 
 EntryRenderer::EntryRenderer(DisplayDevice *display, Entry *entry, int relativeX, int relativeY, int index)
 {

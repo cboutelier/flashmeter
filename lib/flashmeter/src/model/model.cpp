@@ -11,24 +11,41 @@ Model::Model(Repository *repo)
         this->observers[j] = nullptr;
     }
 
-    modeEntry = new Entry(0);
+    modeEntry = new Entry(0,0);
     modeEntry->setEntryName("Mode");
     modeEntry->addValue("Ambient");
     modeEntry->addValue("Flash");
+    modeEntry->setCallback(Model::onValidateSettingCallback, this);
 
      
-    sensitivityEntry = new Entry(1);
+    sensitivityEntry = new Entry(1,1);
     sensitivityEntry->setEntryName("ISO");
     sensitivityEntry->addValue("100");
     sensitivityEntry->addValue("200");
     sensitivityEntry->addValue("400");
     sensitivityEntry->addValue("800");
     sensitivityEntry->addValue("1600"); 
+     sensitivityEntry->setCallback(Model::onValidateSettingCallback, this);
     
 
     this->currentLuxValue = 0.0;
 
     load();
+}
+
+
+void Model::onValidateSettingCallback( int key, int value, void *this_pointer)
+{
+    Model *self = static_cast<Model *>(this_pointer);
+    
+    if( key == 0){
+        self->setModeIndex(value);
+        
+    }else if( key == 1){
+        self->setSensitivityIndex(value);
+    }
+    self->save();
+    //self->onValidateSetting( value);
 }
 
 void Model::setCurrentLuxValue(float luxValue, bool fireEvent)
@@ -57,6 +74,11 @@ void Model::setSpeedIndex(const int speedIndex, bool fireEvent)
     }
 }
 
+void Model::setModeIndex(const int mode){
+    this->modeIndex = mode;
+    this->fireEvents();
+}
+
 int Model::getSpeedIndex() const
 {
     return this->speedIndex;
@@ -74,6 +96,7 @@ void Model::setSensitivityIndex(const int newIndex)
         this->sensitivityIndex = newIndex;
         int isoValue = (int)(pow(2.0, this->sensitivityIndex) * 100);
         sprintf(this->sensitivityValue, "%i", isoValue);
+        
         this->fireEvents();
     }
 }
@@ -100,9 +123,9 @@ void Model::load()
 {
     if (this->repository != nullptr)
     {
-        int sensIndex = repository->loadKey("SENSITIVITY");
-        this->preferredApertureIndex = repository->loadKey("APERTURE");
-        this->modeIndex = repository->loadKey("MODE");
+        int sensIndex = repository->loadKey(SENSITIVITY_KEY);
+        this->preferredApertureIndex = repository->loadKey(APERTURE_KEY);
+        this->modeIndex = repository->loadKey(MODE_KEY);
 
         setSensitivityIndex(sensIndex);
         getModeEntry()->setCurrentValueIndex(this->modeIndex);
@@ -115,9 +138,9 @@ void Model::save()
 {
     if (this->repository != nullptr)
     {
-        repository->saveKey("SENSITIVITY", this->sensitivityIndex);
-        repository->saveKey("APERTURE", this->preferredApertureIndex);
-        repository->saveKey("MODE", this->modeIndex);
+        repository->saveKey(SENSITIVITY_KEY, this->sensitivityIndex);
+        repository->saveKey(APERTURE_KEY, this->preferredApertureIndex);
+        repository->saveKey(MODE_KEY, this->modeIndex);
     }
 }
 
@@ -125,7 +148,7 @@ void Model::savePreferedAperture()
 {
     if (this->repository != nullptr)
     {
-        repository->saveKey("APERTURE", this->preferredApertureIndex);
+        repository->saveKey(APERTURE_KEY, this->preferredApertureIndex);
     }
 }
 

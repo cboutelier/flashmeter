@@ -9,24 +9,33 @@ EspEEPROMRepository::EspEEPROMRepository(void (*attach)(), void (*detach)())
     
 }
 
-int EspEEPROMRepository::loadKey(char const *key) 
+int EspEEPROMRepository::loadKey(const int key) 
 {
     int value;
     this->detachInterruptCallback();
-    int address = getAddress(key);
-    value = EEPROM.readInt( address );
+    
+    value = EEPROM.readInt( key );
     this->attachInterruptCallback();
+    Serial.print("Load key: ");
+    Serial.print(key);
+    Serial.print(" : ");
+    Serial.println(value);
     return value;
 }
 
-void EspEEPROMRepository::saveKey( char  const *key, int value)
+void EspEEPROMRepository::saveKey( const int key, int value)
 {
+
+    Serial.print("Saving key ");
+    Serial.print(key);
+    Serial.print(" : ");
+    Serial.println(value);
     //Detach interruption to allow use of the memory
     this->detachInterruptCallback();
 
     // int address = MODE_INDEX;
 
-    EEPROM.writeInt(getAddress(key),value);
+    EEPROM.writeInt(key,value);
     EEPROM.commit();
    
 
@@ -42,9 +51,3 @@ void EspEEPROMRepository::saveKey( char  const *key, int value)
         repository->saveKey("MODE", this->modeIndex);
         */
 
-int EspEEPROMRepository::getAddress(char const *key){
-    if( strcmp( key, "APERTURE") == 0){
-        return 0 + 2*sizeof(int);
-    }
-    return 0;
-}

@@ -9,6 +9,7 @@ class Area : public Observer
 {
 public:
     Area(DisplayDevice *d, int x, int y, int width, int height);
+    virtual ~Area();
     int getX();
     int getY();
     int getWidth();

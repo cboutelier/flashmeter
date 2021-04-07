@@ -53,7 +53,7 @@ void MainPage::show()
 
     this->infoArea->show();
 
-    //this->model->fireEvents();
+   // this->model->fireEvents();
 }
 
 void MainPage::buildAreas()

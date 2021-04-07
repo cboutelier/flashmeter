@@ -103,6 +103,10 @@ void setup()
 
   attachInterrupts();
 
+  int iso = (int)(pow(2.0, 0.0) * 100);
+  Serial.print("Sensitivity: ");
+  Serial.println(iso);
+
   Serial.println(F("Setup done"));
 }
  
@@ -165,7 +169,7 @@ void manageCommands()
 {
   if (okCommand)
   {
-    //guiController->onOkClick();
+    guiController->onOkClick();
     okCommand = false;
     paused = false;
   }

@@ -9,13 +9,13 @@ class EspEEPROMRepository : public Repository
 
 public:
     EspEEPROMRepository(void (*attach)(), void (*detach)());
-    virtual int loadKey(char const *key);
-    virtual void saveKey(char const *key, int value);
+    virtual int loadKey(const int key);
+    virtual void saveKey(const int key, int value);
 
 protected:
     void (*attachInterruptCallback)();
     void (*detachInterruptCallback)();
-    int getAddress(char const *key);
+
 };
 
 #endif //ESP_EPROM_REPOSITORY_H

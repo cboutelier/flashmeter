@@ -8,6 +8,9 @@ Area::Area(DisplayDevice *d, int x, int y, int width, int height)
     this->height = height;
     this->display = d;
 }
+Area::~Area(){
+    
+}
 
 int Area::getX()
 {

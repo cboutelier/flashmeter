@@ -47,7 +47,13 @@ void InfoArea::onReceiveDataFromSubject(const Observable *observable)
         this->luxValueChanged = true;
         this->setLuxValue(model->getCurrentLuxValue());
     }
-
+ 
+ 
+/*
+  char msg[50];
+    sprintf(msg, "%i %s", model->getSensitivityIndex(), model->getSensitivityValue());
+   this->console->println(msg);
+*/
     if (this->getSensitivity() != model->getSensitivityIndex())
     {
         this->sensitivityChanged = true;
@@ -77,11 +83,12 @@ void InfoArea::displaySensitivity(const int yBaseLine, const int fontSize)
         return;
     }
     display->setCursor(5, yBaseLine, fontSize);
-    if (this->getSensitivity() > 0)
+    if (this->getSensitivity() >= 0)
     {
         char msg[30];
         strcpy(msg, this->sensitivityValue);
         strcat(msg, " ISO");
+        this->console->println(msg);
 
         display->print(msg);
         this->sensitivityChanged = false;

@@ -15,10 +15,10 @@ private:
     ConsoleDelegator* console;
 
 protected:
-    int sensitivity = 0;
+    int sensitivity = -1;
     char sensitivityValue[20];
-    double luxValue = 0.0;
-    int evValue = 0;
+    double luxValue = -1.0;
+    int evValue = -1;
     bool sensitivityChanged = true;
     bool luxValueChanged = true;
     bool evValueChanged = true;

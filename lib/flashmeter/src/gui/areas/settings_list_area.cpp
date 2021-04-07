@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <string.h>
 #include "renderers/entry_renderer.h"
+#include "entry_area.h"
 
 SettingsListArea::SettingsListArea(DisplayDevice *d, ConsoleDelegator *console, int x, int y, int width, int height) : Area(d, x, y, width, height)
 {
@@ -82,7 +83,7 @@ void SettingsListArea::addEntry(Entry *entry, const int index)
 
 void SettingsListArea::onButtonEvent(const unsigned int button)
 {
-
+    bool repaint = false;
     int entrySelectedIndex = -1;
     for (int i = 0; i < entryCount; i++)
     {
@@ -93,13 +94,19 @@ void SettingsListArea::onButtonEvent(const unsigned int button)
         }
     }
 
+    char msg[50];
+    sprintf(msg, "Selected %i", entrySelectedIndex);
+    this->console->println(msg);
+
     if (button == 1)
     {
-        onUp(entrySelectedIndex);
+        
+        repaint = onUp(entrySelectedIndex);
     }
     else if (button == 2)
     {
-        onDown(entrySelectedIndex);
+        
+        repaint = onDown(entrySelectedIndex);
     }
     else if (button == 3)
     {
@@ -109,10 +116,40 @@ void SettingsListArea::onButtonEvent(const unsigned int button)
     {
         //RIGHT
     }
-    displayEntries();
+    else if (button == 6)
+    {
+        //OK
+        if (entrySelectedIndex >= 0)
+        {
+            Entry *entry = this->entries[entrySelectedIndex];
+            if (!entry->isEdited())
+            {
+                entry->setEdited(true);
+                choiceArea = new EntryArea(this->display, this->console, 10, 0, 210, 135);
+                choiceArea->setForeground(TFT_BLACK);
+                choiceArea->setBackground(TFT_RED);
+                choiceArea->setOkCallback(SettingsListArea::onValidateSettingCallback, this);
+                choiceArea->setEntryIndex(entrySelectedIndex);
+                choiceArea->setValues(entry->getValues(), entry->getEnabledValuesCount());
+                choiceArea->setCurrentIndex(entry->getCurrentValueIndex());
+                choiceArea->show();
+            }
+            else
+            {
+                if (choiceArea != nullptr)
+                {
+                    choiceArea->onOk();
+                }
+            }
+        }
+    }
+    if (repaint)
+    {
+        displayEntries();
+    }
 }
 
-void SettingsListArea::onDown(int currentSelectedIndex)
+bool SettingsListArea::onDown(int currentSelectedIndex)
 {
     this->console->println("On button down");
 
@@ -121,26 +158,32 @@ void SettingsListArea::onDown(int currentSelectedIndex)
         this->entries[0]->select();
         displayEntries();
         this->console->println("Select the first and show");
-        return;
+        return true;
     }
     int entrySelectedIndex = currentSelectedIndex;
 
-    char msg[50];
-    sprintf(msg, "%i  %i ", entrySelectedIndex, this->entryCount);
-    this->console->println(msg);
-
-    if (entrySelectedIndex < (entryCount - 1))
+    if (this->entries[entrySelectedIndex]->isEdited())
     {
-        this->console->println("Button pressed and toggle selection");
-        this->entries[entrySelectedIndex]->toggleSelection();
-        if (this->entries[entrySelectedIndex + 1] != nullptr)
+        choiceArea->onDown();
+        return false;
+    }
+    else
+    {
+
+        if (entrySelectedIndex < (entryCount - 1))
         {
-            this->entries[entrySelectedIndex + 1]->toggleSelection();
+            this->console->println("Button pressed and toggle selection");
+            this->entries[entrySelectedIndex]->toggleSelection();
+            if (this->entries[entrySelectedIndex + 1] != nullptr)
+            {
+                this->entries[entrySelectedIndex + 1]->toggleSelection();
+            }
         }
+        return true;
     }
 }
 
-void SettingsListArea::onUp(int currentSelectedIndex)
+bool SettingsListArea::onUp(int currentSelectedIndex)
 {
     this->console->println("On button up");
     if (currentSelectedIndex == -1)
@@ -148,20 +191,56 @@ void SettingsListArea::onUp(int currentSelectedIndex)
         this->entries[0]->select();
         displayEntries();
         this->console->println("Select the first and show");
-        return;
+        return true;
     }
     int entrySelectedIndex = currentSelectedIndex;
-    if (entrySelectedIndex > 0)
+
+    if (this->entries[entrySelectedIndex]->isEdited())
     {
-        this->console->println("Button pressed and toggle selection");
-        this->entries[entrySelectedIndex]->toggleSelection();
-        if (this->entries[entrySelectedIndex - 1] != nullptr)
-        {
-            this->entries[entrySelectedIndex - 1]->toggleSelection();
-        }
+        choiceArea->onUp();
+        return false;
     }
     else
     {
-        this->entries[entrySelectedIndex]->toggleSelection();
+        if (entrySelectedIndex > 0)
+        {
+            this->console->println("Button pressed and toggle selection");
+            this->entries[entrySelectedIndex]->toggleSelection();
+            if (this->entries[entrySelectedIndex - 1] != nullptr)
+            {
+                this->entries[entrySelectedIndex - 1]->toggleSelection();
+            }
+        }
+        else
+        {
+            this->entries[entrySelectedIndex]->toggleSelection();
+        }
+        return true;
+    }
+}
+
+void SettingsListArea::onValidateSettingCallback(int value, void *this_pointer)
+{
+    SettingsListArea *self = static_cast<SettingsListArea *>(this_pointer);
+    self->onValidateSetting(value);
+    self->initDone = false;
+    self->show();
+}
+
+void SettingsListArea::onValidateSetting(int value)
+{
+    this->console->println("onValidate settings");
+    if (this->choiceArea != nullptr)
+    {
+        delete choiceArea;
+    }
+    for (int i = 0; i < entryCount; i++)
+    {
+        if (this->entries[i] != nullptr && this->entries[i]->isSelected())
+        {
+            this->entries[i]->onOk(value);
+            this->entries[i]->setEdited(false);
+            break;
+        }
     }
 }
