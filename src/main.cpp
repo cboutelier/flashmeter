@@ -3,10 +3,13 @@
 
 #include <Wire.h>
 #include <BH1750.h>
-#include <TFT_eSPI.h>
-#include "gui/gui_controller.h"
-#include "flashmeter_model.h"
-#include "light_sensor/light_sensor.h"
+#include <model/model.h>
+#include <repository.h>
+#include <gui/gui_controller.h>
+#include "esp_eeprom_repository.h"
+#include "TFT_display_device.h"
+#include <light_sensor.h>
+#include "arduino_console.h"
 
 #define SCL_PIN 22
 #define SDA_PIN 21
@@ -21,11 +24,17 @@
 const int DEBOUNCE_DELAY = 500;
 const int READING_TIMEOUT = 20000;
 
-BH1750 device;
+//BH1750 device;
+LightSensorDevice* device;
 LightSensor*  lightSensor;
-TFT_eSPI display;
 GuiController *guiController;
-FlashMeterModel *model;
+
+Model* model;
+Repository* repository;
+ArduinoConsole console;
+
+//For some reasons, the TFT object must be instanced here
+TFTDisplayDevice display;
 
 double focale = 1.4;
 long speed = 30;
@@ -62,7 +71,8 @@ void setup()
 
   //Alway initiate a serial connection...
   Serial.begin(9600);
-  EEPROM.begin(512);
+
+  repository = new EspEEPROMRepository(&attachInterrupts, &detachInterrupts);
 
   //declare pin for settings as Input
   pinMode(SET_PIN, INPUT_PULLUP);
@@ -76,19 +86,26 @@ void setup()
   //Specific initialization of the Wire library: because the bh1750 lib does not do it, and because the board uses non standard pins.
   Wire.begin(SDA_PIN, SCL_PIN);
 
-   
+  model = new Model( repository);
   
 
-  model = new FlashMeterModel();
+  /*model = new FlashMeterModel();
   model->setAttachCallback( &attachInterrupts);
   model->setDetachCallback( &detachInterrupts);
   model->setCurrentLuxValue(20);
-  lightSensor = new LightSensor(&device, model);
+  */
+  device = new LightSensorDevice();
+  lightSensor = new LightSensor(device, model, &console);
   lightSensor->attachSubject(model);
+  
 
-  guiController = new GuiController(&display, model);
+  guiController = new GuiController( &display,  model, &console);
 
   attachInterrupts();
+
+  int iso = (int)(pow(2.0, 0.0) * 100);
+  Serial.print("Sensitivity: ");
+  Serial.println(iso);
 
   Serial.println(F("Setup done"));
 }
@@ -122,15 +139,17 @@ void loop()
 
   if (millis() - lastButtonAction > READING_TIMEOUT)
   {
-    guiController->off();
-    paused = true;
+   // guiController->off();
+    //paused = true;
   }
 
   manageCommands();
 
+
   if( !paused){
     lightSensor->read();
   }
+
 
   delay(100);
 
@@ -156,7 +175,7 @@ void manageCommands()
   }
   if (backCommand)
   {
-    guiController->onBackClick();
+    //guiController->onBackClick();
     backCommand = false;
   }
   if (upCommand)
@@ -215,7 +234,7 @@ void IRAM_ATTR onOkClick()
     lastButtonAction = millis();
   }
   */
-  guiController->on();
+  //guiController->on();
   if (millis() - lastButtonAction > DEBOUNCE_DELAY)
   {
     if( millis()-lastButtonAction > READING_TIMEOUT){
