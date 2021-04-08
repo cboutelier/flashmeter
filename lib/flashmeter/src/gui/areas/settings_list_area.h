@@ -17,6 +17,7 @@ private:
     void onValidateSetting(int value);
     void *page;
     void (*refreshPageCallback)(void *p);
+    void (*cancelCallback)(void* p);
     int configurationVersion = -2;
 
 protected:
@@ -39,6 +40,11 @@ public:
         this->page = p;
         this->refreshPageCallback = callback;
     };
+
+    void setCancelCallback( void (*callback)(void *p), void *p){
+        this->page = p;
+        this->cancelCallback = callback;
+    }
 };
 
 #endif //SETTINGS_AREA_H

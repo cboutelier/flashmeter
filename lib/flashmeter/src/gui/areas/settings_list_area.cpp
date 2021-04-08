@@ -40,16 +40,10 @@ void SettingsListArea::onReceiveDataFromSubject(const Observable *observable)
 {
     Model* model = (Model*)observable;
 
-    char *msg = new char[50];
-    sprintf(msg, "version %i", model->getConfigurationVersion());
-   // this->console->println(msg);
-
     if( this->configurationVersion != model->getConfigurationVersion()){
-        this->console->println("Received event on setting list");
         this->configurationVersion = model->getConfigurationVersion();
         this->show();
     }
-    delete [] msg;
 }
 
 void SettingsListArea::displayEntries()
@@ -105,10 +99,6 @@ void SettingsListArea::onButtonEvent(const unsigned int button)
         }
     }
 
-    char msg[50];
-    sprintf(msg, "Selected %i", entrySelectedIndex);
-    this->console->println(msg);
-
     if (button == 1)
     {
         
@@ -122,6 +112,8 @@ void SettingsListArea::onButtonEvent(const unsigned int button)
     else if (button == 3)
     {
         //LEFT
+        this->cancelCallback(this->page);
+        repaint=true;
     }
     else if (button == 4)
     {
@@ -162,13 +154,11 @@ void SettingsListArea::onButtonEvent(const unsigned int button)
 
 bool SettingsListArea::onDown(int currentSelectedIndex)
 {
-    this->console->println("On button down");
 
     if (currentSelectedIndex == -1)
     {
         this->entries[0]->select();
         displayEntries();
-        this->console->println("Select the first and show");
         return true;
     }
     int entrySelectedIndex = currentSelectedIndex;
@@ -239,7 +229,6 @@ void SettingsListArea::onValidateSettingCallback(int value, void *this_pointer)
 
 void SettingsListArea::onValidateSetting(int value)
 {
-    this->console->println("onValidate settings");
     if (this->choiceArea != nullptr)
     {
         delete choiceArea;

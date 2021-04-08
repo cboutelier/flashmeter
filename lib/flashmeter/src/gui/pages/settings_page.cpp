@@ -24,8 +24,10 @@ void SettingPage::buildAreas()
     ((SettingsListArea *)this->settingsListArea)->addEntry(this->model->getModeEntry(), 0);
     ((SettingsListArea *)this->settingsListArea)->addEntry(this->model->getSensitivityEntry(), 1);
     ((SettingsListArea *)this->settingsListArea)->setRefreshPageCallback(this->refreshCallback, this);
+    ((SettingsListArea *)this->settingsListArea)->setCancelCallback(this->refreshCallback, this);
     this->settingsListArea->attachSubject(this->model);
 }
+
 void SettingPage::refreshCallback(void *page)
 {
     SettingPage *self = static_cast<SettingPage *>(page);

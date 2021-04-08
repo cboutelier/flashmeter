@@ -9,7 +9,7 @@ EntryArea::EntryArea(DisplayDevice *d, ConsoleDelegator *console, int x, int y, 
 
 EntryArea::~EntryArea()
 {
-    this->console->println("removing area");
+
 }
 
 void EntryArea::show()
