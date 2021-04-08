@@ -11,43 +11,41 @@ Model::Model(Repository *repo)
         this->observers[j] = nullptr;
     }
 
-    modeEntry = new Entry(0,0);
+    modeEntry = new Entry(0, 0);
     modeEntry->setEntryName("Mode");
     modeEntry->addValue("Ambient");
     modeEntry->addValue("Flash");
     modeEntry->setCallback(Model::onValidateSettingCallback, this);
 
-     
-    sensitivityEntry = new Entry(1,1);
+    sensitivityEntry = new Entry(1, 1);
     sensitivityEntry->setEntryName("ISO");
     sensitivityEntry->addValue("100");
     sensitivityEntry->addValue("200");
     sensitivityEntry->addValue("400");
     sensitivityEntry->addValue("800");
-    sensitivityEntry->addValue("1600"); 
-     sensitivityEntry->setCallback(Model::onValidateSettingCallback, this);
-    
+    sensitivityEntry->addValue("1600");
+    sensitivityEntry->setCallback(Model::onValidateSettingCallback, this);
 
     this->currentLuxValue = 0.0;
 
     load();
 }
 
-
-void Model::onValidateSettingCallback( int key, int value, void *this_pointer)
+void Model::onValidateSettingCallback(int key, int value, void *this_pointer)
 {
     Model *self = static_cast<Model *>(this_pointer);
-    self->configurationVersion = self->configurationVersion+1;
-   
-    
-    if( key == 0){
+    self->configurationVersion = self->configurationVersion + 1;
+
+    if (key == 0)
+    {
         self->setModeIndex(value);
-        
-    }else if( key == 1){
+    }
+    else if (key == 1)
+    {
         self->setSensitivityIndex(value);
     }
     self->save();
-    
+
     //self->onValidateSetting( value);
 }
 
@@ -77,7 +75,8 @@ void Model::setSpeedIndex(const int speedIndex, bool fireEvent)
     }
 }
 
-void Model::setModeIndex(const int mode){
+void Model::setModeIndex(const int mode)
+{
     this->modeIndex = mode;
     this->modeEntry->setCurrentValueIndex(mode);
     this->fireEvents();
@@ -102,7 +101,7 @@ void Model::setSensitivityIndex(const int newIndex)
         sprintf(this->sensitivityValue, "%i", isoValue);
 
         this->sensitivityEntry->setCurrentValueIndex(newIndex);
-        
+
         this->fireEvents();
     }
 }
@@ -125,6 +124,14 @@ void Model::fireEvents() const
     }
 }
 
+void Model::forceFireEvents() const
+{
+    for (int j = 0; j < this->registeredObservers; j++)
+    {
+        this->observers[j]->onReceiveDataFromSubject(this);
+    }
+}
+
 void Model::load()
 {
     if (this->repository != nullptr)
@@ -136,7 +143,6 @@ void Model::load()
         setSensitivityIndex(sensIndex);
         getModeEntry()->setCurrentValueIndex(this->modeIndex);
         getSensitivityEntry()->setCurrentValueIndex(sensIndex);
-        
     }
 }
 
@@ -160,6 +166,7 @@ void Model::savePreferedAperture()
 
 void Model::registerObserver(Observer *observer)
 {
+
     if (this->registeredObservers < MAX_REGISTERED_OBSERVERS)
     {
         for (int j = 0; j < MAX_REGISTERED_OBSERVERS; j++)

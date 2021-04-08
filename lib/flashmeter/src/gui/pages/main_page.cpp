@@ -50,7 +50,6 @@ void MainPage::show()
     display->setRotation(1);
     this->apertureArea->show();
     this->speedArea->show();
-
     this->infoArea->show();
 
    // this->model->fireEvents();

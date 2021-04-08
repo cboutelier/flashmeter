@@ -1,8 +1,9 @@
 #include "gui_controller.h"
 #include "pages/main_page.h"
 #include "pages/settings_page.h"
+#include <string.h>
 
-GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator* console)
+GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator *console)
 {
     //this->pages = new Page[5];
     this->model = model;
@@ -11,13 +12,14 @@ GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator* c
     //this->page = NULL;
     isOn = true;
     display = d;
-    this->page = new MainPage(this->display, this->model, this->console, "MAIN");
 
     /*
     display->fillScreen(TFT_BLACK);
     display->setTextColor(TFT_GREEN, TFT_BLACK);
     */
     //this->showSplash();
+
+    this->page = new MainPage(this->display, this->model, this->console, "MAIN");
     this->page->show();
 }
 
@@ -65,7 +67,6 @@ void GuiController::showSplash()
         display->setRotation(1);
         display->setCursor(40, 60, 4);
         display->print("FLASHMETER");
-        
     }
     this->console->println("FLASHMETER");
 }
@@ -90,9 +91,29 @@ void GuiController::onSettingClick()
     {
         delete this->page;
     }
-    this->page = new SettingPage(this->display,this->model, this->console, "SETTINGS");
+    this->page = new SettingPage(this->display, this->model, this->console, "SETTINGS");
+    ((SettingPage *)this->page)->setExitCallback(exitSettings, this);
     this->page->show();
-    
+}
+
+void GuiController::exitSettings(void *refToThis)
+{
+    GuiController *self = static_cast<GuiController *>(refToThis);
+    self->navigateToMain();
+}
+
+
+// && strcmp(this->page->getCode(), "MAIN") == 0
+
+void GuiController::navigateToMain()
+{
+    if (this->page != nullptr)
+    {
+        delete this->page;
+    }
+    this->page = new MainPage(this->display, this->model, this->console, "MAIN");
+    this->page->show();
+    this->model->forceFireEvents();
 }
 
 void GuiController::onUpClick()
@@ -101,7 +122,6 @@ void GuiController::onUpClick()
     {
         this->page->onButtonEvent(1);
     }
-    
 }
 
 void GuiController::onDownClick()
@@ -134,12 +154,12 @@ void GuiController::onRightClick()
 
 bool GuiController::onOkClick()
 {
-      if (this->page != nullptr)
+    if (this->page != nullptr)
     {
-        
+
         this->page->onButtonEvent(6);
     }
-    
+
     return false;
 }
 

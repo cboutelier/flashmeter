@@ -86,7 +86,7 @@ void SettingsListArea::addEntry(Entry *entry, const int index)
     this->entryCount = index + 1;
 }
 
-void SettingsListArea::onButtonEvent(const unsigned int button)
+int SettingsListArea::onButtonEvent(const unsigned int button)
 {
     bool repaint = false;
     int entrySelectedIndex = -1;
@@ -114,6 +114,9 @@ void SettingsListArea::onButtonEvent(const unsigned int button)
         //LEFT
         this->cancelCallback(this->page);
         repaint=true;
+        if( this->choiceArea == nullptr){
+            return 1;
+        }
     }
     else if (button == 4)
     {
@@ -150,6 +153,7 @@ void SettingsListArea::onButtonEvent(const unsigned int button)
     {
         displayEntries();
     }
+    return 0;
 }
 
 bool SettingsListArea::onDown(int currentSelectedIndex)

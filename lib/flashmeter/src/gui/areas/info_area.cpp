@@ -48,12 +48,6 @@ void InfoArea::onReceiveDataFromSubject(const Observable *observable)
         this->setLuxValue(model->getCurrentLuxValue());
     }
  
- 
-/*
-  char msg[50];
-    sprintf(msg, "%i %s", model->getSensitivityIndex(), model->getSensitivityValue());
-   this->console->println(msg);
-*/
     if (this->getSensitivity() != model->getSensitivityIndex())
     {
         this->sensitivityChanged = true;

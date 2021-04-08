@@ -14,6 +14,8 @@ private:
     bool isUpDownAllowed();
     Area *titleArea;
     Area *settingsListArea;
+    void (*exitCallback)(void*);
+    void *callingContext;
 
 protected:
     //EntryRenderer *renderers;
@@ -25,6 +27,7 @@ public:
     void onButtonEvent(const unsigned int button);
     void show();
     static void refreshCallback(void *this_pointer);
+    void setExitCallback(  void (*exitCallback)(void*), void *context){ this->exitCallback = exitCallback; this->callingContext=context; };
 };
 
 #endif //SETTING_PAGE_H

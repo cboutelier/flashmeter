@@ -9,15 +9,14 @@
 class GuiController
 {
 public:
-    GuiController(DisplayDevice* d, Model* model, ConsoleDelegator* console);
- 
+    GuiController(DisplayDevice *d, Model *model, ConsoleDelegator *console);
+
     int currentPage = 0;
     int usedPages = 0;
 
-   
     void off();
     void on();
-     
+
     void show();
 
     void onSettingClick();
@@ -27,16 +26,17 @@ public:
     void onLeftClick();
     bool onOkClick();
     bool onBackClick();
-
+    void navigateToMain();
+    static void exitSettings(void *refToThis);
 
 private:
     DisplayDevice *display;
-    ConsoleDelegator* console;
+    ConsoleDelegator *console;
     void showSplash();
     bool isOn;
-    Model* model;
+    Model *model;
 
-    Page* page;
+    Page *page;
 };
 
 #endif

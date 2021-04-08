@@ -31,7 +31,7 @@ public:
     void addEntry(Entry *entry, const int index);
     void displayEntries();
     void displayEntry(Entry *entry, int index);
-    void onButtonEvent(const unsigned int button);
+    int onButtonEvent(const unsigned int button);
 
     bool onDown(int index);
     bool onUp(int index);

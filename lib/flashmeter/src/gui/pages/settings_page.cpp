@@ -9,6 +9,9 @@ SettingPage::SettingPage(DisplayDevice *d, Model *model, ConsoleDelegator *conso
 
 SettingPage::~SettingPage()
 {
+    this->model->unRegisterObserver(this->settingsListArea);
+    delete titleArea;
+    delete settingsListArea;
 }
 
 void SettingPage::buildAreas()
@@ -44,5 +47,9 @@ void SettingPage::show()
 
 void SettingPage::onButtonEvent(const unsigned int button)
 {
-    ((SettingsListArea *)this->settingsListArea)->onButtonEvent(button);
+    int returnCode = ((SettingsListArea *)this->settingsListArea)->onButtonEvent(button);
+    if( returnCode ==1 && button == 3){
+        this->console->println("Exit settings requested");
+        this->exitCallback(this->callingContext);
+    }
 }

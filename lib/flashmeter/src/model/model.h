@@ -45,6 +45,11 @@ public:
 
     static void onValidateSettingCallback(int key, int value, void *this_pointer);
 
+    /**
+    * To be used when a page is recreated.
+    */
+    void forceFireEvents() const;
+
 private:
     Repository *repository;
 
