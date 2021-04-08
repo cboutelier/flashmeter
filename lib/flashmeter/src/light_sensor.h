@@ -20,6 +20,7 @@ protected:
     Model *model;
     ConsoleDelegator* console;
     float previousLuxValue = -1.0;
+    int previousLuxIntValue = -1;
     double speeds[28];
   
     int calculateSpeedIndex( int EV100, int sensibilityIndex, int focalIndex) const;

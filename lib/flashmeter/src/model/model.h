@@ -29,9 +29,10 @@ public:
     void setCurrentEV(const int ev) { this->currentEV = ev; };
     int getCurrentEV() const { return this->currentEV; };
 
-    int getModeIndex() const { return this->modeIndex;};
+    int getModeIndex() const { return this->modeIndex; };
     void setModeIndex(const int mode);
 
+    int getConfigurationVersion() const { return this->configurationVersion; };
 
     virtual void registerObserver(Observer *observer);
     virtual void unRegisterObserver(Observer *observer);
@@ -40,12 +41,17 @@ public:
     void decreaseApertureIndex();
 
     Entry *getModeEntry() { return this->modeEntry; };
-    Entry *getSensitivityEntry(){ return this->sensitivityEntry;};
+    Entry *getSensitivityEntry() { return this->sensitivityEntry; };
 
     static void onValidateSettingCallback(int key, int value, void *this_pointer);
 
 private:
     Repository *repository;
+
+    /**
+     * Counter of configuration version. Used by the setting page to know if an event needs refresh of the page.
+     **/
+    int configurationVersion = -1;
 
     float currentLuxValue;
 

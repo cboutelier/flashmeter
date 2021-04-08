@@ -37,6 +37,8 @@ Model::Model(Repository *repo)
 void Model::onValidateSettingCallback( int key, int value, void *this_pointer)
 {
     Model *self = static_cast<Model *>(this_pointer);
+    self->configurationVersion = self->configurationVersion+1;
+   
     
     if( key == 0){
         self->setModeIndex(value);
@@ -45,6 +47,7 @@ void Model::onValidateSettingCallback( int key, int value, void *this_pointer)
         self->setSensitivityIndex(value);
     }
     self->save();
+    
     //self->onValidateSetting( value);
 }
 
@@ -76,6 +79,7 @@ void Model::setSpeedIndex(const int speedIndex, bool fireEvent)
 
 void Model::setModeIndex(const int mode){
     this->modeIndex = mode;
+    this->modeEntry->setCurrentValueIndex(mode);
     this->fireEvents();
 }
 
@@ -96,6 +100,8 @@ void Model::setSensitivityIndex(const int newIndex)
         this->sensitivityIndex = newIndex;
         int isoValue = (int)(pow(2.0, this->sensitivityIndex) * 100);
         sprintf(this->sensitivityValue, "%i", isoValue);
+
+        this->sensitivityEntry->setCurrentValueIndex(newIndex);
         
         this->fireEvents();
     }

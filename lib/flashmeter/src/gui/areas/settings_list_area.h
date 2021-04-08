@@ -15,8 +15,9 @@ private:
     EntryArea *choiceArea = nullptr;
     static void onValidateSettingCallback(int value, void *this_pointer);
     void onValidateSetting(int value);
-    void* page;
-   void (*refreshPageCallback)( void *p);
+    void *page;
+    void (*refreshPageCallback)(void *p);
+    int configurationVersion = -2;
 
 protected:
 public:
@@ -33,7 +34,11 @@ public:
 
     bool onDown(int index);
     bool onUp(int index);
-    void setRefreshPageCallback(void (*callback)( void *p), void* p){this->page = p; this->refreshPageCallback = callback;};
+    void setRefreshPageCallback(void (*callback)(void *p), void *p)
+    {
+        this->page = p;
+        this->refreshPageCallback = callback;
+    };
 };
 
 #endif //SETTINGS_AREA_H

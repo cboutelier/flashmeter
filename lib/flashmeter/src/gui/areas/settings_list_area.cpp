@@ -38,7 +38,18 @@ void SettingsListArea::show()
 
 void SettingsListArea::onReceiveDataFromSubject(const Observable *observable)
 {
-    //Do nothing
+    Model* model = (Model*)observable;
+
+    char *msg = new char[50];
+    sprintf(msg, "version %i", model->getConfigurationVersion());
+   // this->console->println(msg);
+
+    if( this->configurationVersion != model->getConfigurationVersion()){
+        this->console->println("Received event on setting list");
+        this->configurationVersion = model->getConfigurationVersion();
+        this->show();
+    }
+    delete [] msg;
 }
 
 void SettingsListArea::displayEntries()

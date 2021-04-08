@@ -38,10 +38,13 @@ void LightSensor::read()
   //  this->console->println("Read");
     //get the value of the sensor
     float lux = this->device->readLightLevel();
-    if (lux != this->previousLuxValue)
+    int intLux = (int) lux;
+    //conversion to int to limit the number of events.
+    if (intLux != this->previousLuxIntValue)
     {
         this->model->setCurrentLuxValue(lux, false);
         this->previousLuxValue = lux;
+        this->previousLuxIntValue = intLux;
         int currentEV100 = (int)((log10(lux) - log10(2.5)) / log10(2));
 
         int currentEVAtSensitivity = currentEV100 + this->model->getSensitivityIndex();
