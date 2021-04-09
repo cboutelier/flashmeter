@@ -31,12 +31,14 @@ void InfoArea::show()
     this->displaySensitivity(yBaseline, fontSize);
     this->displayLuxValue(yBaseline, fontSize);
     this->displayEVValue(yBaseline + 10, fontSize);
-    if( this->ambiantMode){
+    if (this->ambiantMode)
+    {
         this->display->drawXBitmap(5, 20, sun_bits, sun_width, sun_height, this->foreground, this->background);
-    }else{
+    }
+    else
+    {
         this->display->drawXBitmap(5, 20, flash_bits, sun_width, sun_height, this->foreground, this->background);
     }
-
 }
 
 void InfoArea::onReceiveDataFromSubject(const Observable *observable)
@@ -47,7 +49,7 @@ void InfoArea::onReceiveDataFromSubject(const Observable *observable)
         this->luxValueChanged = true;
         this->setLuxValue(model->getCurrentLuxValue());
     }
- 
+
     if (this->getSensitivity() != model->getSensitivityIndex())
     {
         this->sensitivityChanged = true;
@@ -60,12 +62,14 @@ void InfoArea::onReceiveDataFromSubject(const Observable *observable)
         this->evValue = model->getCurrentEV();
         this->evValueChanged = true;
     }
-    if( model->getModeIndex() == 0){
+    if (model->getModeIndex() == 0)
+    {
         this->ambiantMode = true;
-    }else{
+    }
+    else
+    {
         this->ambiantMode = false;
     }
-   
 
     this->show();
 }
@@ -99,6 +103,7 @@ void InfoArea::displayLuxValue(const int yBaseLine, const int fontSize)
     {
         return;
     }
+    display->fillRect(170, 0, 240 - 170, yBaseLine + 10, this->background);
     int _luxValue = this->getLuxValue();
 
     int xPosition = 200;
@@ -136,6 +141,7 @@ void InfoArea::displayEVValue(const int yBaseLine, const int fontSize)
     {
         return;
     }
+    display->fillRect(170, yBaseLine, 240 - 170, 10, this->background);
     int xPosition = 195;
 
     display->setCursor(xPosition, yBaseLine, fontSize);
