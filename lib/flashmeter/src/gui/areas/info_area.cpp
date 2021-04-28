@@ -61,6 +61,9 @@ void InfoArea::onReceiveDataFromSubject(const Observable *observable)
     {
         this->evValue = model->getCurrentEV();
         this->evValueChanged = true;
+        char msg[50];
+        sprintf(msg, "Max EV: %i", model->getMaxEV());
+        this->console->println(msg);
     }
     if (model->getModeIndex() == 0)
     {

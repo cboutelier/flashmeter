@@ -26,8 +26,10 @@ public:
     const char *getSensitivityValue() const;
     int getPreferredApertureIndex() const;
     int getSpeedIndex() const;
-    void setCurrentEV(const int ev) { this->currentEV = ev; };
+    void setCurrentEV(const int ev) { this->currentEV = ev; if( this->currentEV > this->maxEV){ this->maxEV = this->currentEV;} };
+     
     int getCurrentEV() const { return this->currentEV; };
+    int getMaxEV()const {return this->maxEV;}
 
     int getModeIndex() const { return this->modeIndex; };
     void setModeIndex(const int mode);
@@ -75,6 +77,8 @@ private:
 
     //EV value is calculated from lux value for the current sensitivity.
     int currentEV;
+
+    int maxEV=-1;
 
     Observer *observers[MAX_REGISTERED_OBSERVERS];
     int registeredObservers = 0;

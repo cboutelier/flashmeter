@@ -88,12 +88,6 @@ void setup()
 
   model = new Model( repository);
   
-
-  /*model = new FlashMeterModel();
-  model->setAttachCallback( &attachInterrupts);
-  model->setDetachCallback( &detachInterrupts);
-  model->setCurrentLuxValue(20);
-  */
   device = new LightSensorDevice();
   lightSensor = new LightSensor(device, model, &console);
   lightSensor->attachSubject(model);
@@ -153,7 +147,7 @@ void loop()
 
   delay(100);
 
-  if( counterForMemory >= 100)
+  if( counterForMemory >= 100000)
   {
      uint32_t  free = esp_get_free_heap_size();
      Serial.print("-----  Free memory: ");
