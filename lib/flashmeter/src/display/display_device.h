@@ -32,6 +32,7 @@ class DisplayDevice
 
 public:
     virtual void fillRect(int x, int y, int width, int height, unsigned int background);
+    virtual void drawRect(int x, int y, int width, int height, unsigned int color);
     virtual void print(char const *text) = 0;
     virtual void turnOn() = 0;
     virtual void turnOff() = 0;

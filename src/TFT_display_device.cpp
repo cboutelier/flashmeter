@@ -8,6 +8,11 @@ void TFTDisplayDevice::fillRect(int x, int y, int width, int height, unsigned in
 {
     this->display.fillRect(x, y, width, height, background);
 }
+
+void TFTDisplayDevice::drawRect( int x, int y, int width, int height, unsigned int color){
+    this->display.drawRect(x, y, width, height, color);
+}
+
 void TFTDisplayDevice::print(char const *text)
 {
    this->display.print(text);

@@ -8,6 +8,7 @@ class TFTDisplayDevice: public DisplayDevice{
 public:
     TFTDisplayDevice();
     void fillRect( int x, int y,  int width,  int height, unsigned int background);
+    void drawRect( int x, int y, int width, int height, unsigned int color);
     void print( char const *text) ;
     void turnOn() ;
     void turnOff() ;

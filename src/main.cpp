@@ -33,6 +33,8 @@ Model* model;
 Repository* repository;
 ArduinoConsole console;
 
+hw_timer_t * timer = NULL;
+
 //For some reasons, the TFT object must be instanced here
 TFTDisplayDevice display;
 
@@ -92,6 +94,8 @@ void setup()
   lightSensor = new LightSensor(device, model, &console);
   lightSensor->attachSubject(model);
   
+  //Init timer
+  timer = timerBegin(0, 80, true);
 
   guiController = new GuiController( &display,  model, &console);
 

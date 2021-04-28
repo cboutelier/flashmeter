@@ -1,6 +1,7 @@
 #include "gui_controller.h"
 #include "pages/main_page.h"
 #include "pages/settings_page.h"
+#include "pages/flash_page.h"
 #include <string.h>
 
 GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator *console)
@@ -18,8 +19,11 @@ GuiController::GuiController(DisplayDevice *d, Model *model, ConsoleDelegator *c
     display->setTextColor(TFT_GREEN, TFT_BLACK);
     */
     //this->showSplash();
-
-    this->page = new MainPage(this->display, this->model, this->console, "MAIN");
+    if( this->model->getModeIndex()==0){
+        this->page = new MainPage(this->display, this->model, this->console, "MAIN");
+    }else{
+        this->page = new FlashPage(this->display, this->model, this->console, "FLASH");
+    }
     this->page->show();
 }
 
