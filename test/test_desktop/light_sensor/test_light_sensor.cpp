@@ -9,7 +9,7 @@ void test_LightSensor() {
     MockLightSensor mockLS;
     FlashMeterModel fmm;
     LightSensor* ls = new LightSensor(&mockLS, &fmm);
-    TEST_ASSERT_EQUAL(ls->calculateSpeedIndex(5, 0, 0), 18);
+    TEST_ASSERT_EQUAL(ls->calculateSpeedIndex(5, 0, 0), 19);
 }
 
 int main( int argc, char **argv) {
