@@ -10,6 +10,7 @@
 #include "TFT_display_device.h"
 #include <light_sensor.h>
 #include "arduino_console.h"
+#include "timer/arduino_timer_service.h"
 
 #define SCL_PIN 22
 #define SDA_PIN 21
@@ -24,18 +25,20 @@
 const int DEBOUNCE_DELAY = 500;
 const int READING_TIMEOUT = 20000;
 
-//BH1750 device;
-LightSensorDevice* device;
-LightSensor*  lightSensor;
+// BH1750 device;
+LightSensorDevice *device;
+LightSensor *lightSensor;
 GuiController *guiController;
 
-Model* model;
-Repository* repository;
+Model *model;
+Repository *repository;
 ArduinoConsole console;
 
-hw_timer_t * timer = NULL;
+TimerService *timerService;
 
-//For some reasons, the TFT object must be instanced here
+// int tickCounter = 0;
+
+// For some reasons, the TFT object must be instanced here
 TFTDisplayDevice display;
 
 double focale = 1.4;
@@ -66,17 +69,21 @@ void IRAM_ATTR onBackClick();
 
 void IRAM_ATTR attachInterrupts();
 void IRAM_ATTR detachInterrupts();
- 
+void IRAM_ATTR tick();
+void IRAM_ATTR startTimerCallback();
+
 void manageCommands();
 void setup()
 {
 
-  //Alway initiate a serial connection...
+  // Alway initiate a serial connection...
   Serial.begin(9600);
 
   repository = new EspEEPROMRepository(&attachInterrupts, &detachInterrupts);
+  timerService = new ArduinoTimerService(&console, startTimerCallback, nullptr, tick);
+ // timerService = new ArduinoTimerService(&console);
 
-  //declare pin for settings as Input
+  // declare pin for settings as Input
   pinMode(SET_PIN, INPUT_PULLUP);
   pinMode(OK_PIN, INPUT_PULLUP);
   pinMode(UP_PIN, INPUT_PULLUP);
@@ -85,19 +92,27 @@ void setup()
   pinMode(LEFT_PIN, INPUT_PULLUP);
   pinMode(BACK_PIN, INPUT_PULLUP);
 
-  //Specific initialization of the Wire library: because the bh1750 lib does not do it, and because the board uses non standard pins.
+  // Specific initialization of the Wire library: because the bh1750 lib does not do it, and because the board uses non standard pins.
   Wire.begin(SDA_PIN, SCL_PIN);
 
-  model = new Model( repository);
-  
+  model = new Model(repository, timerService);
+
   device = new LightSensorDevice();
   lightSensor = new LightSensor(device, model, &console);
   lightSensor->attachSubject(model);
-  
-  //Init timer
-  timer = timerBegin(0, 80, true);
 
-  guiController = new GuiController( &display,  model, &console);
+  // Init timer
+  /*
+  timer = timerBegin(0, 80, true);
+  timerAttachInterrupt(timer, &tick, true);
+  timerAlarmWrite(timer, 1000000, true);
+  */
+
+  // model->setTimerDisableCallback(disableAlarm);
+  // model->setTimerEnableCallback(enableAlarm);
+  // timerAlarmEnable(timer);
+
+  guiController = new GuiController(&display, model, &console);
 
   attachInterrupts();
 
@@ -106,9 +121,10 @@ void setup()
   Serial.println(iso);
 
   Serial.println(F("Setup done"));
-}
- 
+  paused = true;
 
+  //timerService->enableAlarm();
+}
 
 void IRAM_ATTR attachInterrupts()
 {
@@ -132,36 +148,56 @@ void IRAM_ATTR detachInterrupts()
   detachInterrupt(BACK_PIN);
 }
 
+// Required because the timer method needs a function, not a method of a class
+void IRAM_ATTR tick()
+{
+  Serial.println("Tick works");
+  if (model != nullptr)
+  {
+    model->tick();
+  }
+}
+
+// Required because the timer method needs a function, not a method of a class
+void IRAM_ATTR startTimerCallback()
+{
+  Serial.println("timer started callback");
+  if (model != nullptr)
+  {
+    model->onTimerStart();
+  }
+}
+
 void loop()
 {
 
   if (millis() - lastButtonAction > READING_TIMEOUT)
   {
-   // guiController->off();
-    //paused = true;
+    // guiController->off();
+    // paused = true;
   }
 
   manageCommands();
 
-
-  if( !paused){
-    lightSensor->read();
+  if (!paused)
+  {
+    lightSensor->readStrobe();
+    //Serial.println(model->getCurrentEV());
   }
 
+  //delay(100);
 
-  delay(100);
-
-  if( counterForMemory >= 100000)
+ /* if (counterForMemory >= 100000)
   {
-     uint32_t  free = esp_get_free_heap_size();
-     Serial.print("-----  Free memory: ");
-     Serial.println(free);
-     counterForMemory=0;
+    uint32_t free = esp_get_free_heap_size();
+    Serial.print("-----  Free memory: ");
+    Serial.println(free);
+    counterForMemory = 0;
   }
   counterForMemory++;
-   
-
+  */
 }
+
 
 void manageCommands()
 {
@@ -173,7 +209,7 @@ void manageCommands()
   }
   if (backCommand)
   {
-    //guiController->onBackClick();
+    // guiController->onBackClick();
     backCommand = false;
   }
   if (upCommand)
@@ -204,8 +240,8 @@ void manageCommands()
 }
 
 /*
-* Transmit the click on the setting button to the gui for further action
-*/
+ * Transmit the click on the setting button to the gui for further action
+ */
 void IRAM_ATTR onSettingClick()
 {
   if ((millis() - lastButtonAction) > DEBOUNCE_DELAY)
@@ -232,27 +268,26 @@ void IRAM_ATTR onOkClick()
     lastButtonAction = millis();
   }
   */
-  //guiController->on();
+  // guiController->on();
   if (millis() - lastButtonAction > DEBOUNCE_DELAY)
   {
-    if( millis()-lastButtonAction > READING_TIMEOUT){
-     //Was guiController->on
+    if (millis() - lastButtonAction > READING_TIMEOUT)
+    {
+      // Was guiController->on
     }
     lastButtonAction = millis();
     okCommand = true;
   }
 }
 
-
-void IRAM_ATTR onBackClick(){
- if (millis() - lastButtonAction > DEBOUNCE_DELAY)
-  { 
+void IRAM_ATTR onBackClick()
+{
+  if (millis() - lastButtonAction > DEBOUNCE_DELAY)
+  {
     lastButtonAction = millis();
     backCommand = true;
   }
-
 }
-
 
 void IRAM_ATTR onUpClick()
 {

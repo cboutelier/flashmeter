@@ -16,7 +16,8 @@ public:
     virtual void onReceiveDataFromSubject(const Observable *model); 
 
 private:
-    ConsoleDelegator* console;    
+    ConsoleDelegator* console;   
+    bool timeout = false; 
      
 };
 

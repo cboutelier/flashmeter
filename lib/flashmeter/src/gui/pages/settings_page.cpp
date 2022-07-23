@@ -24,8 +24,11 @@ void SettingPage::buildAreas()
     this->settingsListArea->setBackground(TFT_BLACK);
     this->settingsListArea->setForeground(TFT_GOLD);
     ((SettingsListArea *)this->settingsListArea)->initEntries(3);
+
     ((SettingsListArea *)this->settingsListArea)->addEntry(this->model->getModeEntry(), 0);
     ((SettingsListArea *)this->settingsListArea)->addEntry(this->model->getSensitivityEntry(), 1);
+    ((SettingsListArea *)this->settingsListArea)->addEntry(this->model->getFlashDelayEntry(), 2);
+    
     ((SettingsListArea *)this->settingsListArea)->setRefreshPageCallback(this->refreshCallback, this);
     ((SettingsListArea *)this->settingsListArea)->setCancelCallback(this->refreshCallback, this);
     this->settingsListArea->attachSubject(this->model);

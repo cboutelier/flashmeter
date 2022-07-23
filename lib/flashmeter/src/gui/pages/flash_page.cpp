@@ -12,16 +12,24 @@ FlashPage::FlashPage(DisplayDevice *d, Model *model, ConsoleDelegator *console, 
 FlashPage::~FlashPage()
 {
     this->model->unRegisterObserver(this->infoArea);
+    this->model->unRegisterObserver(this->progressArea);
+    this->model->unRegisterObserver(this->flashArea);
 }
 
 void FlashPage::onButtonEvent(const unsigned int button)
 {
 
- 
+    //if event OK start timer
+    if( button == 6){
+        this->console->println("Start timer");
+        this->model->startStrobeTimer();
+    }
 
     //if event UP  this->model->increaseApertureIndex();
     //if event DOWN  this->model->decreaseApertureIndex();
 }
+
+ 
 
 void FlashPage::show()
 {
@@ -45,9 +53,11 @@ void FlashPage::buildAreas()
     this->progressArea = new ProgressArea(this->display, this->console,0, 115, 240, 20);
     this->progressArea->setBackground(TFT_BLACK);
     this->progressArea->setForeground(TFT_WHITE);
+    this->progressArea->attachSubject(this->model);
 
     this->flashArea = new FlashArea(this->display, this->console, 0, 40, 240, 75 );
     this->flashArea->setBackground(TFT_BLACK);
     this->flashArea->setForeground(TFT_WHITE);
+   
 
 }

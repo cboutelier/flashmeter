@@ -17,7 +17,7 @@ public:
 
 private:
     ConsoleDelegator* console;    
-    double current =  0.1; 
+    double current =  0.00; 
 };
 
 #endif //PROGRESS_AREA_H

@@ -12,6 +12,8 @@ class LightSensor : public Observer
 public:
     LightSensor(LightSensorDevice *device, Model *model, ConsoleDelegator* console);
     void read();
+    void initStrobeMeasure();
+    void readStrobe();
     
     virtual void onReceiveDataFromSubject(const Observable* model);
 

@@ -32,6 +32,41 @@ int LightSensor::calculateSpeedIndex(int EV100, int sensibilityIndex, int apertu
     return index;
 }
 
+void LightSensor::initStrobeMeasure(){
+    this->previousLuxIntValue = 0;
+    
+}
+
+void LightSensor::readStrobe(){
+    if( model->shouldRead()){
+     float lux = this->device->readLightLevel();
+    int intLux = (int) lux;
+  
+    if( intLux != this->previousLuxIntValue && intLux > (this->previousLuxIntValue * 100)){
+        this->previousLuxIntValue = intLux;
+        this->model->setCurrentLuxValue(lux, false);
+        int currentEV100 = (int)((log10(lux) - log10(2.5)) / log10(2));
+
+        int currentEVAtSensitivity = currentEV100 + this->model->getSensitivityIndex();
+        this->model->setCurrentEV(currentEVAtSensitivity);
+         if (currentEVAtSensitivity >= -1 && currentEVAtSensitivity <= 20)
+        {
+            int speedIndex = this->calculateSpeedIndex(currentEV100, this->model->getSensitivityIndex(), this->model->getPreferredApertureIndex());
+            double speed = this->speeds[speedIndex];
+
+            this->model->setSpeed(speed, false);
+            this->model->setSpeedIndex(speedIndex, true);
+        }
+        else
+        {
+            this->model->setSpeed(0.0, true);
+        }
+        model->strobeDetected();
+    }
+    }
+
+}
+
 void LightSensor::read()
 {
 

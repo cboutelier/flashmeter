@@ -22,5 +22,4 @@ void FlashArea::fillArea()
 void FlashArea::onReceiveDataFromSubject(const Observable *m)
 {
     Model *model = (Model *)m;
-     
 }

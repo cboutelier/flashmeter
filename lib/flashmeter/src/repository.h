@@ -4,6 +4,7 @@
 #define MODE_KEY 0
 #define SENSITIVITY_KEY (sizeof(int))
 #define APERTURE_KEY (2*sizeof(int))
+#define FLASH_DELAY_KEY (3*sizeof(int))
 
 class Repository
 {

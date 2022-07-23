@@ -228,11 +228,10 @@ void SettingsListArea::onValidateSettingCallback(int value, void *this_pointer)
 {
     SettingsListArea *self = static_cast<SettingsListArea *>(this_pointer);
     self->onValidateSetting(value);
-    
 }
 
 void SettingsListArea::onValidateSetting(int value)
-{
+{   
     if (this->choiceArea != nullptr)
     {
         delete choiceArea;
