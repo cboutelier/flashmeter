@@ -1,5 +1,5 @@
 #ifdef UNIT_TEST
-
+#include <Arduino.h>
 #include <unity.h>
 #include "desktop_console.h"
 #include "exposure_calculator.h"
@@ -15,7 +15,7 @@ void setUp(void)
 
 void tearDown(void)
 {
-    delete calculator;
+      delete calculator;
     calculator = nullptr;
     if (result != nullptr)
     {
@@ -155,42 +155,42 @@ void test_GetOffsets()
     RUN_TEST(test_GetOffset_50);
 }
 
-void test_GetApertureOffsets()
+void test_GetSpeedForApertures()
 {
-    RUN_TEST(test_GetApertureOffset_5_4);
-    RUN_TEST(test_GetApertureOffset_5_8);
-    RUN_TEST(test_GetApertureOffset_5_11);
-}
-
-int runUnityTests(void)
-{
-    UNITY_BEGIN();
-     test_GetOffsets();
-     test_GetApertureOffsets();
-   
-    RUN_TEST(test_GetApertures);
-
-    RUN_TEST(test_GetAperture_loose);
-    RUN_TEST(test_GetSpeeds);
-    
     RUN_TEST(test_GetSpeedForAperture_EV10_5ISO100);
     RUN_TEST(test_GetSpeedForAperture_EV11_5ISO100);
     RUN_TEST(test_GetSpeedForAperture_EV10_5ISO200);
     RUN_TEST(test_GetSpeedForAperture_EV10_5ISO400);
     RUN_TEST(test_GetSpeedForAperture_EV10_8ISO100);
     RUN_TEST(test_GetSpeedForAperture_EV10_4ISO100);
-
-    return UNITY_END();
 }
 
-// WARNING!!! PLEASE REMOVE UNNECESSARY MAIN IMPLEMENTATIONS //
-
-/**
- * For native dev-platform or for some embedded frameworks
- */
-int main(void)
+void setup()
 {
-    return runUnityTests();
+    delay(2000);
+
+    UNITY_BEGIN();
+    test_GetSpeedForApertures();
+    test_GetOffsets();
+
+    RUN_TEST(test_GetApertures);
+
+    RUN_TEST(test_GetAperture_loose);
+    RUN_TEST(test_GetSpeeds);
+
+    RUN_TEST(test_GetApertureOffset_5_4);
+    RUN_TEST(test_GetApertureOffset_5_8);
+    RUN_TEST(test_GetApertureOffset_5_11);
+
+    UNITY_END();
+}
+
+void loop()
+{
+    digitalWrite(13, HIGH);
+    delay(100);
+    digitalWrite(13, LOW);
+    delay(500);
 }
 
 #endif

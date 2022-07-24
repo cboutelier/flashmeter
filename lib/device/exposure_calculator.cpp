@@ -10,7 +10,7 @@ using namespace std;
 ExposureCalculator::ExposureCalculator()
 {
     initApertures(20);
-    initShutterSpeeds(19);
+    initShutterSpeeds(this->speedCounts);
 }
 
 ExposureCalculator::~ExposureCalculator()
@@ -21,11 +21,15 @@ ExposureCalculator::~ExposureCalculator()
     }
     delete this->apertures;
 
-    for (int i = 0; i < 19; i++)
+    for (int i = 0; i < this->speedCounts; i++)
     {
+        cout << "deleting shutter speed " << i << endl;
         delete this->shutterSpeeds[i];
+        this->shutterSpeeds[i] = nullptr;
     }
     delete this->shutterSpeeds;
+    this->shutterSpeeds = nullptr;
+    cout <<  "All deleted in Exposure Calculator" << endl;
 }
 
 
@@ -37,7 +41,7 @@ void ExposureCalculator::initApertures(const int number)
     {
         if (i == 0)
         {
-            char display[3];
+            char display[4];
             sprintf(display, "f/1");
             this->apertures[i] = new ApertureEntry(display, 1, 1);
         }
@@ -117,8 +121,11 @@ ExposureProposal* ExposureCalculator::getSettingsForDefinedAperture(const LightR
         cout << "Index is " << index << endl;
         cout << "Global offset " << globalOffset << endl; 
         index += globalOffset;
+        cout << "Before getting the shutter speeds" << endl;
         result->speed = this->shutterSpeeds[index]->getValue();
+        cout << "Before setting the display " << endl;
         result->setSpeedDisplay(this->shutterSpeeds[index]->getDisplay());
+        cout << "Before returning " << endl;
 
         return result; 
     }
@@ -169,7 +176,7 @@ double ExposureCalculator::getEVOffset(const int iso) const
 
     if (iso == 0)
     {
-        throw InvalidIsoException("ISO 0 is invalid");
+        return ISO_EXCEPTION_VALUE;
     }
     double ratio = iso / 100.0;
     return -1.0 * (log(ratio) / log(2));
@@ -222,7 +229,7 @@ double ExposureCalculator::getAperture(const double submittedAperture, bool stri
 void ExposureCalculator::initShutterSpeeds(const int number)
 {
     this->shutterSpeeds = new ShutterSpeedEntry *[number];
-    for( int i = 0; i < 12; i++){
+    for( int i = 0; i < number; i++){
         const char* display = speed_full[i*2];
         const char* speedAsChar = speed_full[(i*2)+1];
         double speed = std::stod(speedAsChar);

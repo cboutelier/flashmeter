@@ -1,10 +1,11 @@
 #pragma once
 #include "light_reading_result.h"
-#include "invalid_iso_exception.h"
 #include "aperture_entry.h"
 #include "shutter_speed_entry.h"
 #include "exposure_proposal.h"
 #include <math.h>
+
+#define ISO_EXCEPTION_VALUE -9999
 
 class ExposureCalculator
 {
@@ -30,4 +31,5 @@ private:
     ShutterSpeedEntry **shutterSpeeds;
     void initApertures(const int size);
     void initShutterSpeeds(const int size);
+    int speedCounts = 12;
 };

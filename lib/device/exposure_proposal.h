@@ -3,6 +3,8 @@
 class ExposureProposal {
 
     public:
+
+        ~ExposureProposal();
         double speed;
         double aperture;
         int iso;
