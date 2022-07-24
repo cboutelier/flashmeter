@@ -31,5 +31,5 @@ private:
     ShutterSpeedEntry **shutterSpeeds;
     void initApertures(const int size);
     void initShutterSpeeds(const int size);
-    int speedCounts = 12;
+    int speedCounts = 20;
 };
