@@ -29,3 +29,5 @@ jobs:
         pip install --upgrade platformio
     - name: Run PlatformIO
       run: pio run -e ttgo-t1
+    - name: Run Test
+      run: pio test -e test
