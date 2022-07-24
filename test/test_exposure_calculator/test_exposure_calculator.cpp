@@ -36,7 +36,7 @@ void test_GetOffset_800()
 
 void test_GetOffset_200()
 {
-    TEST_ASSERT_EQUAL(-1, calculator->getEVOffset(200));
+    TEST_ASSERT_EQUAL(-10, calculator->getEVOffset(200));
 }
 
 void test_GetOffset_100()
